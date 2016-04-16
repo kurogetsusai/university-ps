@@ -4,10 +4,10 @@ namespace PS;
 
 class Loader {
 
-	private debugMode;
-	private defaultPage;
-	private page;
-	private params;
+	private $debugMode;
+	private $defaultPage;
+	private $page;
+	private $params;
 
 	public function __construct($cmd, $defaultPage = 'home', $debugMode = false)
 	{
@@ -15,7 +15,7 @@ class Loader {
 		$this->debugMode   = $debugMode;
 		$this->defaultPage = $defaultPage;
 
-		if ($debugEnabled) {
+		if ($debugMode) {
 			error_reporting(E_ALL);
 			ini_set('display_errors', 1);
 			ini_set('track_errors'  , 1);
@@ -38,7 +38,7 @@ class Loader {
 			include $file;
 	}
 
-	public function getParams($index)
+	public function getParams()
 	{
 		return $this->params;
 	}
@@ -46,7 +46,7 @@ class Loader {
 	public function getPage()
 	{
 		if ($this->page == '') {
-			if ($this->getParams[0] == '') {
+			if ($this->getParams()[0] == '') {
 				$this->page = $this->defaultPage;
 			} elseif (is_readable('page/' . $this->params[0] . '.php')) {
 				$this->page = $this->params[0];

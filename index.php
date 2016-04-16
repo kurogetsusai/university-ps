@@ -6,13 +6,16 @@
 # - the .htaccess file, make sure that your server allows overrides
 #   (check /etc/apache2/apache2.conf if <Directory /var/www/> has 'AllowOverride All')
 
+# get cmd
+$cmd = isset($_GET['cmd']) ? $_GET['cmd'] : '';
+
 # load config
 require 'etc/config.php';
-define('CURRENT_PATH'  , $_GET['cmd'] == '' ? GLOBAL_ROOT : GLOBAL_ROOT . '/' . $_GET['cmd']);
+define('CURRENT_PATH'  , $cmd == '' ? GLOBAL_ROOT : GLOBAL_ROOT . '/' . $cmd);
 
 # load the loader
 require 'lib/loader.php';
-$loader = new \PS\Loader($_GET['cmd'], DEFAULT_PAGE, DEBUG_MODE);
+$loader = new \PS\Loader($cmd, DEFAULT_PAGE, DEBUG_MODE);
 
 # load modules
 # TODO
