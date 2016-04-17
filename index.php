@@ -19,11 +19,12 @@ $loader = new \PS\Loader($cmd, DEFAULT_PAGE, DEBUG_MODE);
 
 # load modules
 # TODO
-#$loader->loadModule('lib/database');
+$loader->loadModule('lib/database');
 #$loader->loadModule('lib/user');
 
 # init database
-# TODO
+$db = new \PS\Database($loader);
+$db->connect(DATABASE_HOST, DATABASE_BASE, DATABASE_USER, DATABASE_PASS);
 
 # init user
 # TODO
