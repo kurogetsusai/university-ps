@@ -20,7 +20,8 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 	- [ ] libuser
 	- [ ] libtown
 	- [ ] libbook
-	- [ ] libauthor
+	- [ ] libwriter
+	- [ ] libauthor ???
 	- [ ] libreservation
 - Frontend
 
