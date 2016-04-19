@@ -14,11 +14,13 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 ## Do zrobienia
 
 - Backend
-	- [ ] SQL setup
+	- [x] SQL setup
 	- [x] libloader
 	- [x] libdatabase
 	- [ ] libuser
+	- [ ] libtown
 	- [ ] libbook
+	- [ ] libauthor
 	- [ ] libreservation
 - Frontend
 
