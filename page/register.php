@@ -25,7 +25,7 @@ if (isset($_POST['register_pesel'])) { // FIXME
 		<h1>Rejestracja</h1>
 		<form method="post">
 			<input type="number" maxlength="11" name="register_pesel" placeholder="PESEL" required><br>
-			<input type="password" name="register_" placeholder="Hasło" required><br>
+			<input type="password" name="register_password" placeholder="Hasło" required><br>
 			<input type="text" maxlength="32" name="register_name" placeholder="Imię" required><br>
 			<input type="text" maxlength="32" name="register_surname" placeholder="Nazwisko" required><br>
 			<input type="text" maxlength="64" name="register_town" placeholder="Miasto" required><br>
