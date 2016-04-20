@@ -13,3 +13,6 @@ define('DATABASE_HOST', 'localhost');
 define('DATABASE_BASE', 'library');
 define('DATABASE_USER', 'library');
 define('DATABASE_PASS', 'V!OSvw^4QMY:Q4F+G');
+
+# lib/user
+define('USER_PASSWORD_COST', 11);
