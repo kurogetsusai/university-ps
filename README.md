@@ -17,11 +17,12 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 	- [x] SQL setup
 	- [x] libloader
 	- [x] libdatabase
-	- [ ] libuser
-	- [ ] libtown
+	- [x] libuser
+	- [x] libtown
 	- [ ] libbook
+	- [ ] libpublisher
 	- [ ] libwriter
-	- [ ] libauthor ???
+	- [ ] libauthor
 	- [ ] libreservation
 - Frontend
 

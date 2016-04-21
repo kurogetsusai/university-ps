@@ -4,7 +4,6 @@ namespace PS;
 
 class User {
 	# constructor data
-	private $loader;
 	private $db;
 	private $password_cost;
 
@@ -26,9 +25,8 @@ class User {
 	private $houseNumber;
 	private $permission;
 
-	public function __construct($loader, $db, $password_cost = 11)
+	public function __construct($db, $password_cost = 11)
 	{
-		$this->loader        = $loader;
 		$this->db            = $db;
 		$this->password_cost = $password_cost;
 	}
@@ -137,7 +135,7 @@ class User {
 		$this->request_data_result = $login_status ? 0 : $result;
 	}
 
-	public function getUserDataFromDb($mode, $input)
+	public function getDataFromDb($mode, $input)
 	{
 		# missing parameters = abort
 		if ($mode == null or $input == null)
@@ -146,18 +144,18 @@ class User {
 		# build the query
 		$query = 'SELECT * FROM user WHERE ';
 		switch($mode) {
-		case 'pesel':
-			$query .= 'pesel = :pesel';
-			break;
 		case 'id':
 			$query .= 'id = :id';
+			break;
+		case 'pesel':
+			$query .= 'pesel = :pesel';
 			break;
 		default:
 			return false;	# invalid mode = abort
 		}
 		$query .= ' LIMIT 1';
 
-		# get user data
+		# get data
 		$stmt = $this->db->base->prepare($query);
 		$stmt->execute(array(':' . $mode => $input));
 		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -191,7 +189,7 @@ class User {
 		# 2 - wrong password
 
 		# get user data (and check if he exists)
-		if (!$this->getUserDataFromDb('pesel', $pesel)) {
+		if (!$this->getDataFromDb('pesel', $pesel)) {
 			return 1;
 		}
 

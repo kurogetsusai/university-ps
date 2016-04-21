@@ -30,7 +30,7 @@ $db = new \PS\Database($loader);
 $db->connect(DATABASE_HOST, DATABASE_BASE, DATABASE_USER, DATABASE_PASS);
 
 # init user
-$user = new \PS\User($loader, $db, USER_PASSWORD_COST);
+$user = new \PS\User($db, USER_PASSWORD_COST);
 $user->processRequestData();
 
 # load page
