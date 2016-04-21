@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS book (
 	title VARCHAR(128) NOT NULL,
 	publicationYear VARCHAR(4) NOT NULL,
 	publisher INT UNSIGNED NOT NULL,
+	status TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	description VARCHAR(512),
 	FOREIGN KEY (publisher) REFERENCES publisher(id)
 ) ENGINE=InnoDB;
