@@ -14,7 +14,6 @@ class User {
 
 	# temp
 	private $plain_password;
-	private $session_hash;
 
 	# data from db
 	private $id;
@@ -45,12 +44,32 @@ class User {
 		);
 	}
 
-	private function calcSessionHash()
+	private function setSession()
 	{
-		$this->session_hash = hash(
-			'whirlpool',
-			$this->id . $this->password
+		$_SESSION['user'] = array(
+			'id'          => $this->id,
+			'pesel'       => $this->pesel,
+			'password'    => $this->password,
+			'name'        => $this->name,
+			'surname'     => $this->surname,
+			'town'        => $this->town,
+			'street'      => $this->street,
+			'houseNumber' => $this->houseNumber,
+			'permission'  => $this->permission
 		);
+	}
+
+	private function respawnFromSession()
+	{
+		$this->id          = $_SESSION['user']['id'];
+		$this->pesel       = $_SESSION['user']['pesel'];
+		$this->password    = $_SESSION['user']['password'];
+		$this->name        = $_SESSION['user']['name'];
+		$this->surname     = $_SESSION['user']['surname'];
+		$this->town        = $_SESSION['user']['town'];
+		$this->street      = $_SESSION['user']['street'];
+		$this->houseNumber = $_SESSION['user']['houseNumber'];
+		$this->permission  = $_SESSION['user']['permission'];
 	}
 
 	public function isLoggedIn()
@@ -68,7 +87,6 @@ class User {
 		$this->logged_in           = false;
 		$this->request_data_result = null;
 		$this->plain_password      = null;
-		$this->session_hash        = null;
 		$this->id                  = null;
 		$this->pesel               = null;
 		$this->password            = null;
@@ -88,22 +106,11 @@ class User {
 		# try to log in using session
 		if (
 			!$login_status &&
-			isset($_SESSION['user_id']) &&
-			isset($_SESSION['session_hash'])
+			isset($_SESSION['user'])
 		) {
-			switch ($this->logInUsingSession($_SESSION['user_id'], $_SESSION['session_hash'])) {
-			case 0:
-				$login_status = true;
-				break;
-			case 1:
-				$result = 11;
-				break;
-			case 2:
-				$result = 12;
-				break;
-			default:
-				$result = 10;
-			}
+			$this->respawnFromSession();
+			$this->logged_in = true;
+			$login_status = true;
 		}
 
 		# try to log in using password
@@ -211,45 +218,14 @@ class User {
 		}
 
 		# set session data
-		$this->calcSessionHash();
-		$_SESSION['user_id']      = $this->id;
-		$_SESSION['session_hash'] = $this->session_hash;
-
-		return 0;
-	}
-
-	public function logInUsingSession($user_id, $session_hash)
-	{
-		# Return codes:
-		# 0 - OK
-		# 1 - wrong user id
-		# 2 - wrong session hash
-
-		# get user data (and check if he exists)
-		if (!$this->getUserDataFromDb('id', $user_id)) {
-			unset($_SESSION['user_id']);
-			unset($_SESSION['session_hash']);
-			return 1;
-		}
-
-		# check session_hash
-		$this->calcSessionHash();
-		if ($this->session_hash != $session_hash || $session_hash == '') {
-			unset($_SESSION['user_id']);
-			unset($_SESSION['session_hash']);
-			$this->clearUserData();
-			return 2;
-		}
-
-		$this->logged_in = true;
+		$this->setSession();
 
 		return 0;
 	}
 
 	public function logOut()
 	{
-		unset($_SESSION['user_id']);
-		unset($_SESSION['session_hash']);
+		unset($_SESSION['user']);
 	}
 }
 
