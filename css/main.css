@@ -6,4 +6,36 @@ body {
 	font-size: 1em;
 	text-align: center;
 }
+.main-menu {
+	background-color: #000000;
+	width: 100%;
+	margin: 0px auto;
+	display: block;
+	padding: 0px;
+	text-align: right;
+}
+.main-menu-button {
+	background-color: #000000;
+	font-size: 16px;
+	color: #FFFFFF;
+	padding: 20px 10px 20px 10px;
+	border: 0px;
+	margin: 0px;
+	cursor: pointer;
+	display: inline-block;
+	font-weight: bold;
+}
+.main-menu a:hover {
+	color: #FFFFFF;
+}
+.logo-small {
+	border: 0px;
+	padding: 0px;
+	height: 100px;
+	margin: 5px auto;
+	display: block;
+}
+td {
+	text-align: left;
+}
 
