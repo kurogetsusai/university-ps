@@ -1,6 +1,5 @@
-CREATE USER 'library'@'localhost' IDENTIFIED BY 'V!OSvw^4QMY:Q4F+G';
 CREATE DATABASE IF NOT EXISTS library DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-GRANT ALL PRIVILEGES ON library.* TO 'library'@'localhost';
+GRANT ALL PRIVILEGES ON library.* TO 'library'@'localhost' IDENTIFIED BY 'V!OSvw^4QMY:Q4F+G';
 USE library;
 
 CREATE TABLE IF NOT EXISTS town (
@@ -62,3 +61,9 @@ CREATE TABLE IF NOT EXISTS reservation (
 	FOREIGN KEY (book) REFERENCES book(id)
 ) ENGINE=InnoDB;
 
+-- Some default users
+INSERT IGNORE INTO town (id, name, postCode) VALUES
+(1, 'Debug Valley', '00000');
+INSERT IGNORE INTO user (id, pesel, password, name, surname, town, street, houseNumber, permission) VALUES
+(1, '0', '$2y$11$imUZili8Mlb4cGuH2rel/eWJ9sG1a/O6Nd.p944hh1NpOmvzqCha6', 'Charlie', 'Root', 1, 'Test', '1', 1),
+(2, '1', '$2y$11$/ArvUc3R1RqjRh8k4Ptuxe6sZuzvg36FGx0geSvwVhrwdvsOSfgjG', 'Lame', 'User', 1, 'Test', '2', 0);
