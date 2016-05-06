@@ -11,6 +11,18 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 - plik `.htaccess`, upewnij się, że twój serwer pozwala na przepisywanie URL (sprawdź plik `/etc/apache2/apache2.conf` czy `<Directory /var/www/>` ma `AllowOverride All`)
 - baza MySQL z zaimportowanym skryptem `setup-db.sql`
 
+## Foldery
+
+- css – CSS
+- doc – dokumentacja
+- etc – config i różne śmieci
+- fonts – fonty
+- gfx – ?
+- inc – fragmenty HTML, które będą gdzieś includowane
+- js – JavaScript
+- lib – biblioteki PHP
+- page – podstrony
+
 ## Do zrobienia
 
 - Backend
@@ -18,11 +30,11 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 	- [x] libloader
 	- [x] libdatabase
 	- [x] libuser
-	- [x] libtown
-	- [ ] libbook
-	- [ ] libpublisher
-	- [ ] libwriter
-	- [ ] libauthor
+	- [ ] libtown
+	- [x] libbook
+	- [x] libpublisher
+	- [x] libwriter
+	- [x] libauthor
 	- [ ] libreservation
 - Frontend
 
@@ -32,11 +44,3 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 	- [ ] strona główna
 	- [ ] strona logowania
 	- [ ] strona rejestracji użytkownika
-
-## Foldery
-
-- css – CSS
-- etc – config i różne śmieci
-- inc – fragmenty HTML, które będą gdzieś includowane
-- lib – biblioteki PHP
-- page – podstrony

@@ -55,7 +55,32 @@ CREATE TABLE IF NOT EXISTS reservation (
 	FOREIGN KEY (book) REFERENCES book(id)
 ) ENGINE=InnoDB;
 
--- Some default users
+-- Some random data to test things
 INSERT IGNORE INTO user (id, pesel, password, name, surname, town, postCode, street, houseNumber, permission) VALUES
 (1, '0', '$2y$11$imUZili8Mlb4cGuH2rel/eWJ9sG1a/O6Nd.p944hh1NpOmvzqCha6', 'Charlie', 'Root', 'Debug Valley', '00000', 'Test', '1', 1),
 (2, '1', '$2y$11$/ArvUc3R1RqjRh8k4Ptuxe6sZuzvg36FGx0geSvwVhrwdvsOSfgjG', 'Lame', 'User', 'Debug Valley', '00000', 'Test', '2', 0);
+INSERT IGNORE INTO publisher (id, name) VALUES
+(1, 'Wydawnictwo Test'),
+(2, 'Super książki');
+INSERT IGNORE INTO writer (id, name, surname) VALUES
+(1, 'Terry', 'Pratchett'),
+(2, 'Władysław', 'Łoziński'),
+(3, 'Wojciech', 'Kuczok'),
+(4, 'Francek', 'Buła'),
+(5, 'Achim', 'Gelynder');
+INSERT IGNORE INTO book (id, isbn, title, publicationYear, publisher, status, description) VALUES
+(1, '00000000001', 'Nocna Straż', 2020, 1, 1, ''),
+(2, '00000000002', 'Prawem i Lewem', 1994, 1, 1, ''),
+(3, '00000000003', 'Gnój, czyli antybiografia', 2008, 1, 0, ''),
+(4, '00000000004', '101 sposobów na sianie marchewek', 2222, 2, 0, 'Posiej se marchewki :D'),
+(5, '00000000005', 'Poradnik kopania leżącego', 1876, 2, 1, ''),
+(6, '00000000006', 'Jak dobrze pisać w Javie', 2020, 1, 0, 'Ta książka to 100 pustych stron');
+INSERT IGNORE INTO author (id, book, writer) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 5, 4),
+(6, 5, 5),
+(7, 6, 1);
+
