@@ -74,7 +74,7 @@ class User {
 	{
 		return $this->logged_in;
 	}
-	
+
 	public function getPermission()
 	{
 		return $this->permission;

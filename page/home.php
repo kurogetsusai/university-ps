@@ -56,8 +56,6 @@ if (!$user->isLoggedIn()) {
 			</div>
 		</div>
 <!--zamówienia użytkownika koniec-->
-<?= GLOBAL_ROOT ?>
-<?= CURRENT_PATH ?>
 	</main>
 </body>
 </html>
