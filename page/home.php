@@ -1,4 +1,5 @@
 <?php
+global $loader;
 global $user;
 
 # entry only for logged in
@@ -18,7 +19,7 @@ if (!$user->isLoggedIn()) {
 <body>
 	<main id="page">
 <!--poniżej includuję belkę menu-->
-<?php require GLOBAL_ROOT."menu.php" ?>
+<?php $loader->loadModule('inc/menu'); ?>
 <!--poniżej kod odpowiadający za tabelę z zamówieniami użytkownika-->
 		<div class="panel panel-primary" style="display: inline-block; min-width: 500px; margin: 10px auto;">
 			<div class="panel-heading"><h5>twoje zamówienia</h5></div>
