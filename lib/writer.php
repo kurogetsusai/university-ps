@@ -69,7 +69,7 @@ class Writer {
 		}
 
 		# yep
-		$this->id      = $row['id'];
+		$this->id      = (int)$row['id'];
 		$this->name    = $row['name'];
 		$this->surname = $row['surname'];
 

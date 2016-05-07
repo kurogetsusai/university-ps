@@ -34,7 +34,7 @@ global $db;
 $books = new \PS\Book($db);
 
 # print all books
-foreach ($books->search('with-publisher') as $book) {
+foreach ($books->search('plain+publishers') as $book) {
 	echo '<tr>';
 
 	echo '<td>' . $book['id'] . '</td>';
@@ -58,8 +58,7 @@ foreach ($books->search('with-publisher') as $book) {
 	echo '<td>' . $book['isbn'] . '</td>';
 	echo '<td>' . $book['publicationYear'] . '</td>';
 	echo '<td>' . $book['description'] . '</td>';
-	$books->setStatus($book['status']);
-	echo '<td>' . $books->getStatusName() . '</td>';
+	echo '<td>' . $books->getStatusName($book['status']) . '</td>';
 
 	echo '</tr>';
 }
@@ -106,7 +105,7 @@ foreach ($books->search('plain') as $book) {
 $books = new \PS\Book($db);
 
 $first = true;
-foreach ($books->search('with-publisher') as $book) {
+foreach ($books->search('plain+publishers') as $book) {
 
 	if ($first) {
 		echo '<thead>';

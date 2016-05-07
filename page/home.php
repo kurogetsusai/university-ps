@@ -1,5 +1,6 @@
 <?php
 global $loader;
+global $db;
 global $user;
 
 # entry only for logged in
@@ -20,6 +21,9 @@ if (!$user->isLoggedIn()) {
 	<main id="page">
 <!--poniżej includuję belkę menu-->
 <?php $loader->loadModule('inc/menu'); ?>
+<?php if ($user->getPermission() === 1) { ?>
+		<h1>TUTAJ JAKIŚ PANEL ADMINA</h1>
+<?php } else { ?>
 <!--poniżej kod odpowiadający za tabelę z zamówieniami użytkownika-->
 		<div class="panel panel-primary" style="display: inline-block; min-width: 500px; margin: 10px auto;">
 			<div class="panel-heading"><h5>twoje zamówienia</h5></div>
@@ -32,31 +36,43 @@ if (!$user->isLoggedIn()) {
 						<th>Komentarz</th>
 						<th>Opcje</th>
 					</thead>
-					<tr>
-						<td>Nocna Straż</td>
-						<td>Terry Pratchett</td>
-						<td>oczekujące</td>
-						<td></td>
-						<td><a class="btn btn-default" href="#" role="button">anuluj</a></td>
-					</tr>
-					<tr>
-						<td>Prawem i Lewem</td>
-						<td>Władysław Łoziński</td>
-						<td>zrealizowane</td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>Gnój, czyli antybiografia</td>
-						<td>Wojciech Kuczok</td>
-						<td>anulowane</td>
-						<td></td>
-						<td></td>
-					</tr>
+<?php
+$reservations = new \PS\Reservation($db);
+
+foreach ($reservations->search('reserver+books', $user->getId()) as $reservation) {
+	echo '<tr>';
+
+	echo '<td>' . $reservation['bookTitle'] . '</td>';
+
+	# authors
+	echo '<td>';
+	$authors = new \PS\Author($db);
+	$first = true;
+	foreach ($authors->search('book', $reservation['book']) as $author) {
+		$writer = new \PS\Writer($db);
+		$writer->getDataFromDb('id', $author['writer']);
+		echo ($first ? '' : ', ') . $writer->getFullName();
+		unset($writer);
+		$first = false;
+	}
+	echo '</td>';
+	unset($authors);
+
+	echo '<td>' . $reservations->getStatusName($reservation['status']) . '</td>';
+	echo '<td>' . $reservation['description'] . '</td>';
+	if ($reservation['status'] == 0)
+		echo '<td><a class="btn btn-default" href="#" role="button">anuluj</a></td>';
+	else
+		echo '<td></td>';
+
+	echo '</tr>';
+}
+?>
 				</table>
 			</div>
 		</div>
 <!--zamówienia użytkownika koniec-->
+<?php } ?>
 	</main>
 </body>
 </html>

@@ -70,7 +70,7 @@ class Town {
 		}
 
 		# yep
-		$this->id       = $row['id'];
+		$this->id       = (int)$row['id'];
 		$this->name     = $row['name'];
 		$this->postCode = $row['postCode'];
 

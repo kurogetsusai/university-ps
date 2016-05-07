@@ -70,14 +70,9 @@ class Book {
 		return $this->status;
 	}
 
-	public function setStatus($status)
+	public function getStatusName($status)
 	{
-		$this->status = $status;
-	}
-
-	public function getStatusName()
-	{
-		return ($this->status_code[$this->status]);
+		return ($status == null ? $this->status_code[$this->status] : $this->status_code[$status]);
 	}
 
 	public function getDescription()
@@ -115,12 +110,12 @@ class Book {
 		}
 
 		# yep
-		$this->id              = $row['id'];
+		$this->id              = (int)$row['id'];
 		$this->isbn            = $row['isbn'];
 		$this->title           = $row['title'];
 		$this->publicationYear = $row['publicationYear'];
-		$this->publisher       = $row['publisher'];
-		$this->status          = $row['status'];
+		$this->publisher       = (int)$row['publisher'];
+		$this->status          = (int)$row['status'];
 		$this->description     = $row['description'];
 
 		return true;
@@ -139,7 +134,7 @@ class Book {
 			         'FROM book';
 			$placeholders = array();
 			break;
-		case 'with-publisher':
+		case 'plain+publishers':
 			$query = 'SELECT book.id, book.isbn, book.title, book.publicationYear, book.publisher, book.status, book.description, publisher.name AS publisherName ' .
 			         'FROM book INNER JOIN publisher ON book.publisher = publisher.id ' .
 			         'ORDER BY book.id';

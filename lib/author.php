@@ -64,14 +64,14 @@ class Author {
 		}
 
 		# yep
-		$this->id     = $row['id'];
-		$this->book   = $row['book'];
-		$this->writer = $row['writer'];
+		$this->id     = (int)$row['id'];
+		$this->book   = (int)$row['book'];
+		$this->writer = (int)$row['writer'];
 
 		return true;
 	}
 
-	public function search($mode, $input)
+	public function search($mode, $input = null)
 	{
 		# missing parameters
 		if ($mode == null)

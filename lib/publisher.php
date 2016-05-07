@@ -57,7 +57,7 @@ class Publisher {
 		}
 
 		# yep
-		$this->id   = $row['id'];
+		$this->id   = (int)$row['id'];
 		$this->name = $row['name'];
 
 		return true;
