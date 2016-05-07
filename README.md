@@ -30,7 +30,6 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 	- [x] libloader
 	- [x] libdatabase
 	- [x] libuser
-	- [ ] libtown
 	- [x] libbook
 	- [x] libpublisher
 	- [x] libwriter
