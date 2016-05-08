@@ -24,6 +24,10 @@ $loader = new \PS\Loader($cmd, DEFAULT_PAGE, DEBUG_MODE);
 # load modules
 $loader->loadModule('lib/database');
 $loader->loadModule('lib/user');
+$loader->loadModule('lib/book');
+$loader->loadModule('lib/writer');
+$loader->loadModule('lib/author');
+$loader->loadModule('lib/reservation');
 
 # init database
 $db = new \PS\Database($loader);

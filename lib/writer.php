@@ -2,21 +2,21 @@
 
 namespace PS;
 
-class Town {
+class Writer {
 	# constructor data
 	private $db;
 
 	# data from db
 	private $id;
 	private $name;
-	private $postCode;
+	private $surname;
 
-	public function __construct($db, $id = null, $name = null, $postCode = null)
+	public function __construct($db, $id = null, $name = null, $surname = null)
 	{
-		$this->db       = $db;
-		$this->id       = $id;
-		$this->name     = $name;
-		$this->postCode = $postCode;
+		$this->db   = $db;
+		$this->id   = $id;
+		$this->name = $name;
+		$this->surname = $surname;
 	}
 
 	public function getId()
@@ -29,9 +29,14 @@ class Town {
 		return $this->name;
 	}
 
-	public function getPostCode()
+	public function getSurname()
 	{
-		return $this->postCode;
+		return $this->surname;
+	}
+
+	public function getFullName()
+	{
+		return $this->name . ' ' . $this->surname;
 	}
 
 	public function getDataFromDb($mode, $input)
@@ -41,16 +46,10 @@ class Town {
 			return false;
 
 		# build the query
-		$query = 'SELECT * FROM town WHERE ';
+		$query = 'SELECT * FROM writer WHERE ';
 		switch($mode) {
 		case 'id':
 			$query .= 'id = :id';
-			break;
-		case 'name':
-			$query .= 'name = :name';
-			break;
-		case 'postCode':
-			$query .= 'postCode = :postCode';
 			break;
 		default:
 			return false;	# invalid mode = abort
@@ -62,7 +61,7 @@ class Town {
 		$stmt->execute(array(':' . $mode => $input));
 		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-		# does the town exist?
+		# does the writer exist?
 
 		# nope
 		if (!isset($row['id'])) {
@@ -70,9 +69,9 @@ class Town {
 		}
 
 		# yep
-		$this->id       = $row['id'];
-		$this->name     = $row['name'];
-		$this->postCode = $row['postCode'];
+		$this->id      = (int)$row['id'];
+		$this->name    = $row['name'];
+		$this->surname = $row['surname'];
 
 		return true;
 	}

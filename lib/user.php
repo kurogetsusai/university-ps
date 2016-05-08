@@ -59,7 +59,7 @@ class User {
 
 	private function respawnFromSession()
 	{
-		$this->id          = $_SESSION['user']['id'];
+		$this->id          = (int)$_SESSION['user']['id'];
 		$this->pesel       = $_SESSION['user']['pesel'];
 		$this->password    = $_SESSION['user']['password'];
 		$this->name        = $_SESSION['user']['name'];
@@ -67,14 +67,54 @@ class User {
 		$this->town        = $_SESSION['user']['town'];
 		$this->street      = $_SESSION['user']['street'];
 		$this->houseNumber = $_SESSION['user']['houseNumber'];
-		$this->permission  = $_SESSION['user']['permission'];
+		$this->permission  = (int)$_SESSION['user']['permission'];
 	}
 
 	public function isLoggedIn()
 	{
 		return $this->logged_in;
 	}
-	
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	public function getPesel()
+	{
+		return $this->pesel;
+	}
+
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	public function getSurname()
+	{
+		return $this->surname;
+	}
+
+	public function getFullName()
+	{
+		return $this->name . ' ' . $this->surname;
+	}
+
+	public function getTown()
+	{
+		return $this->town;
+	}
+
+	public function getStreet()
+	{
+		return $this->street;
+	}
+
+	public function getHouseNumber()
+	{
+		return $this->houseNumber;
+	}
+
 	public function getPermission()
 	{
 		return $this->permission;
@@ -173,7 +213,7 @@ class User {
 		}
 
 		# yep
-		$this->id          = $row['id'];
+		$this->id          = (int)$row['id'];
 		$this->pesel       = $row['pesel'];
 		$this->password    = $row['password'];
 		$this->name        = $row['name'];
@@ -181,7 +221,7 @@ class User {
 		$this->town        = $row['town'];
 		$this->street      = $row['street'];
 		$this->houseNumber = $row['houseNumber'];
-		$this->permission  = $row['permission'];
+		$this->permission  = (int)$row['permission'];
 
 		return true;
 	}
