@@ -12,14 +12,8 @@ class Book {
 	private $title;
 	private $publicationYear;
 	private $publisher;
-	private $status;
+	private $count;
 	private $description;
-
-	# status codes
-	private $status_code = array(
-		'dostępny',
-		'niedostępny'
-	);
 
 	public function __construct($db,
 	                            $id              = null,
@@ -27,7 +21,7 @@ class Book {
 	                            $title           = null,
 	                            $publicationYear = null,
 	                            $publisher       = null,
-	                            $status          = null,
+	                            $count           = null,
 	                            $description     = null)
 	{
 		$this->db              = $db;
@@ -36,7 +30,7 @@ class Book {
 		$this->title           = $title;
 		$this->publicationYear = $publicationYear;
 		$this->publisher       = $publisher;
-		$this->status          = $status;
+		$this->count           = $count;
 		$this->description     = $description;
 	}
 
@@ -65,19 +59,19 @@ class Book {
 		return $this->publisher;
 	}
 
-	public function getStatus()
+	public function getCount()
 	{
-		return $this->status;
-	}
-
-	public function getStatusName($status)
-	{
-		return ($status == null ? $this->status_code[$this->status] : $this->status_code[$status]);
+		return $this->count;
 	}
 
 	public function getDescription()
 	{
 		return $this->description;
+	}
+
+	public function isAvailable()
+	{
+		return $this->count > 0;
 	}
 
 	public function getDataFromDb($mode, $input)
@@ -115,7 +109,7 @@ class Book {
 		$this->title           = $row['title'];
 		$this->publicationYear = $row['publicationYear'];
 		$this->publisher       = (int)$row['publisher'];
-		$this->status          = (int)$row['status'];
+		$this->count           = (int)$row['count'];
 		$this->description     = $row['description'];
 
 		return true;
@@ -130,12 +124,12 @@ class Book {
 		# get query
 		switch ($mode) {
 		case 'plain':
-			$query = 'SELECT id, isbn, title, publicationYear, publisher, status, description ' .
+			$query = 'SELECT id, isbn, title, publicationYear, publisher, count, description ' .
 			         'FROM book';
 			$placeholders = array();
 			break;
 		case 'plain+publishers':
-			$query = 'SELECT book.id, book.isbn, book.title, book.publicationYear, book.publisher, book.status, book.description, publisher.name AS publisherName ' .
+			$query = 'SELECT book.id, book.isbn, book.title, book.publicationYear, book.publisher, book.count, book.description, publisher.name AS publisherName ' .
 			         'FROM book INNER JOIN publisher ON book.publisher = publisher.id ' .
 			         'ORDER BY book.id';
 			$placeholders = array();
