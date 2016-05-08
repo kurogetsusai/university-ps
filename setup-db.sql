@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS book (
 	title VARCHAR(128) NOT NULL,
 	publicationYear VARCHAR(4) NOT NULL,
 	publisher INT UNSIGNED NOT NULL,
-	status TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	count INT UNSIGNED NOT NULL,
 	description VARCHAR(512),
 	FOREIGN KEY (publisher) REFERENCES publisher(id)
 ) ENGINE=InnoDB;
@@ -69,13 +69,13 @@ INSERT IGNORE INTO writer (id, name, surname) VALUES
 (3, 'Wojciech', 'Kuczok'),
 (4, 'Francek', 'Buła'),
 (5, 'Achim', 'Gelynder');
-INSERT IGNORE INTO book (id, isbn, title, publicationYear, publisher, status, description) VALUES
-(1, '00000000001', 'Nocna Straż', 2020, 1, 1, ''),
-(2, '00000000002', 'Prawem i Lewem', 1994, 1, 1, ''),
-(3, '00000000003', 'Gnój, czyli antybiografia', 2008, 1, 0, ''),
-(4, '00000000004', '101 sposobów na sianie marchewek', 2222, 2, 0, 'Posiej se marchewki :D'),
-(5, '00000000005', 'Poradnik kopania leżącego', 1876, 2, 1, ''),
-(6, '00000000006', 'Jak dobrze pisać w Javie', 2020, 1, 1, 'Ta książka to 100 pustych stron');
+INSERT IGNORE INTO book (id, isbn, title, publicationYear, publisher, count, description) VALUES
+(1, '00000000001', 'Nocna Straż', 2020, 1, 0, ''),
+(2, '00000000002', 'Prawem i Lewem', 1994, 1, 0, ''),
+(3, '00000000003', 'Gnój, czyli antybiografia', 2008, 1, 5, ''),
+(4, '00000000004', '101 sposobów na sianie marchewek', 2222, 2, 2, 'Posiej se marchewki :D'),
+(5, '00000000005', 'Poradnik kopania leżącego', 1876, 2, 0, ''),
+(6, '00000000006', 'Jak dobrze pisać w Javie', 2020, 1, 0, 'Ta książka to 100 pustych stron');
 INSERT IGNORE INTO author (id, book, writer) VALUES
 (1, 1, 1),
 (2, 2, 2),
