@@ -58,7 +58,7 @@ foreach ($books->search('plain+publishers') as $book) {
 	echo '<td>' . $book['isbn'] . '</td>';
 	echo '<td>' . $book['publicationYear'] . '</td>';
 	echo '<td>' . $book['description'] . '</td>';
-	echo '<td>' . $book['count'] . '</td>';
+	echo '<td>' . $book['availableCount'] . '</td>';
 
 	echo '</tr>';
 }

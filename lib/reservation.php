@@ -135,7 +135,8 @@ class Reservation {
 			                'book.title AS bookTitle, ' .
 			                'book.publicationYear AS bookPublicationYear, ' .
 			                'book.publisher AS bookPublisher, ' .
-			                'book.count AS bookCount, ' .
+			                'book.totalCount AS bookTotalCount, ' .
+			                'book.availableCount AS bookAvailableCount, ' .
 			                'book.description AS bookDescription ' .
 			         'FROM reservation INNER JOIN book ON reservation.book = book.id ' .
 			         'WHERE reserver = :reserver ' .
