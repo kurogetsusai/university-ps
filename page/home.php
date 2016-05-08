@@ -22,7 +22,40 @@ if (!$user->isLoggedIn()) {
 <!--poniżej includuję belkę menu-->
 <?php $loader->loadModule('inc/menu'); ?>
 <?php if ($user->getPermission() === 1) { ?>
-		<h1>TUTAJ JAKIŚ PANEL ADMINA</h1>
+		<div class="panel panel-primary" style="display: inline-block; min-width: 500px; margin: 10px auto;">
+			<div class="panel-heading"><h5>wszystkie zamówienia</h5></div>
+			<div class="panel-body">
+				<table class="table table-striped table-bordered">
+					<thead>
+						<th>nr</th>
+						<th>Użytkownik</th>
+						<th>Tytuł</th>
+						<th>Autor</th>
+						<th>Status</th>
+						<th>Komentarz</th>
+						<th>Opcje</th>
+					</thead>
+					<tr>
+						<td>6/2016</td>
+						<td>Clint Eastwood</td>
+						<td>Kaznodzieja: Alamo</td>
+						<td>Garth Ennis</td>
+						<td>wypożyczone</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>15/2016</td>
+						<td>Jan Kowalski</td>
+						<td>Archipelag Gułag</td>
+						<td>Aleksander Sołżenicyn</td>
+						<td>oddane (zakończone)</td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
+		</div>
 <?php } else { ?>
 <!--poniżej kod odpowiadający za tabelę z zamówieniami użytkownika-->
 		<div class="panel panel-primary" style="display: inline-block; min-width: 500px; margin: 10px auto;">
