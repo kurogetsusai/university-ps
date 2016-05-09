@@ -3,7 +3,6 @@
 namespace PS;
 
 class Loader {
-
 	private $debugMode;
 	private $defaultPage;
 	private $page;
@@ -58,5 +57,17 @@ class Loader {
 		return $this->page;
 	}
 
+	public function redirect($destination)
+	{
+		if ($destination == '/')
+			$location = (GLOBAL_ROOT != '' ? GLOBAL_ROOT : '/');
+		elseif (is_readable('page' . $destination . '.php'))
+			$location = GLOBAL_ROOT . $destination;
+		else
+			$location = $destination;
+
+		header('Location: ' . $location);
+		exit();
+	}
 }
 

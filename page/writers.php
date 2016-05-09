@@ -5,7 +5,7 @@ global $user;
 
 # entry only for logged in
 if (!$user->isLoggedIn()) {
-	header('Location: ' . GLOBAL_ROOT . '/login');
+	$loader->redirect('/login');
 	exit();
 }
 ?>
@@ -27,29 +27,26 @@ if (!$user->isLoggedIn()) {
 				<a href="" class="btn btn-primary">Dodaj autora</a>
 				<table class="table table-striped table-bordered" style="margin-top: 10px;">
 					<thead>
-						<th>nr</th>
-						<th>Nazwisko</th>
+						<th>Nr</th>
+						<th>Imię i Nazwisko</th>
 						<th>Opcje</th>
 					</thead>
-					<tr>
-						<td>6</td>
-						<td>Andrzej Sapkowski</td>
-						<td><a href="" class="btn btn-default">edytuj</a></td>
-					</tr>
-					<tr>
-						<td>15</td>
-						<td>Jacek Komuda</td>
-						<td><a href="" class="btn btn-default">edytuj</a></td>
-					</tr>
+<?php
+$writers = new \PS\Writer($db);
+
+foreach ($writers->search('plain') as $writer) {
+	echo '<tr>';
+
+	echo '<td>' . $writer['id'] . '</td>';
+	echo '<td>' . $writer['name'] . ' ' . $writer['surname'] . '</td>';
+	echo '<td><a href="" class="btn btn-default">edytuj</a></td>';
+
+	echo '</tr>';
+}
+?>
 				</table>
 			</div>
 		</div>
-<?php
-# show password change errors
-if (isset($_POST['old_password']) && isset($_POST['new_password1']) && isset($_POST['new_password2'])) {
-	echo '<br /><div class="alert alert-danger" role="alert" style="max-width: 500px; margin: 0px auto;">Login code: ' . $user->getRequestDataResult() . '</div>';
-}
-?>
 	</main>
 </body>
 </html>

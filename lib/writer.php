@@ -75,5 +75,26 @@ class Writer {
 
 		return true;
 	}
+
+	public function search($mode, $input = null)
+	{
+		# missing parameters
+		if ($mode == null)
+			return false;
+
+		# get query
+		switch ($mode) {
+		case 'plain':
+			$query = 'SELECT * ' .
+			         'FROM writer';
+			$placeholders = array();
+			break;
+		}
+
+		# get data
+		$stmt = $this->db->base->prepare($query);
+		$stmt->execute($placeholders);
+		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+	}
 }
 
