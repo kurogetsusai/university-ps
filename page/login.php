@@ -1,9 +1,10 @@
 <?php
+global $loader;
 global $user;
 
 # no entry for logged in
 if ($user->isLoggedIn()) {
-	header('Location: ' . (GLOBAL_ROOT != '' ? GLOBAL_ROOT : '/'));
+	$loader->redirect('/');
 	exit();
 }
 ?>

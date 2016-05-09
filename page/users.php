@@ -1,11 +1,10 @@
 <?php
 global $loader;
-global $db;
 global $user;
 
 # entry only for logged in
 if (!$user->isLoggedIn()) {
-	header('Location: ' . GLOBAL_ROOT . '/login');
+	$loader->redirect('/login');
 	exit();
 }
 ?>
