@@ -11,6 +11,6 @@ global $user;
 	<a class="main-menu-button" href="<?= GLOBAL_ROOT ?>/">książki</a>
 	<a class="main-menu-button" href="<?= GLOBAL_ROOT ?>/home">zamówienia</a>
 	<a class="main-menu-button" href="<?= GLOBAL_ROOT ?>/password">zmień hasło</a>
-	<a class="main-menu-button" href="<?= GLOBAL_ROOT ?>/logout" style="margin-right: 20%;">wyloguj</a>
+	<a class="main-menu-button" href="<?= GLOBAL_ROOT ?>/logout" style="margin-right: 10%;">wyloguj</a>
 </div>
 <script src="<?= GLOBAL_ROOT ?>/js/buttons.js"></script>

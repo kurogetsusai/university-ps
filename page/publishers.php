@@ -21,10 +21,20 @@ if (!$user->isLoggedIn()) {
 	<main id="page">
 <!--poniżej includuję belkę menu-->
 <?php $loader->loadModule('inc/menu'); ?>
-		<div class="panel panel-primary" style="max-width: 500px; margin: 0px auto; margin-top: 10px;">
-			<div class="panel-heading"><h5>Lista wydawnictw</h5></div>
+		<div class="panel panel-primary" style="margin: 0px auto; margin-top: 10px;">
+			<div class="panel-heading" style="padding: 5px;"><h5>Lista wydawnictw</h5></div>
 			<div class="panel-body">
-				<a href="" class="btn btn-primary">Dodaj wydawnictwo</a>
+				<a href="<?= GLOBAL_ROOT ?>/publisher_form" class="btn btn-primary">Dodaj wydawnictwo</a>
+				<div class="well" style="margin-top: 10px; padding: 5px;">
+					<h4>Opcje wyświetlania</h4>
+					<form method="post" class="form-inline">
+						<div class="form-group" style="margin: 5px;">
+							<label for="search_name">nazwa:</label>
+							<input class="form-control" id="search_name" name="search_name" placeholder="nazwa" />
+						</div>
+						<input type="submit" class="btn btn-primary" value="pokaż">
+					</form>
+				</div>
 				<table class="table table-striped table-bordered" style="margin-top: 10px;">
 					<thead>
 						<th>Nr</th>
