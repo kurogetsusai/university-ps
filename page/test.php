@@ -27,7 +27,7 @@ global $db;
 						<th>ISBN</th>
 						<th>Rok</th>
 						<th>Opis</th>
-						<th>Status</th>
+						<th>Ilość</th>
 					</thead>
 <?php
 
@@ -58,7 +58,7 @@ foreach ($books->search('plain+publishers') as $book) {
 	echo '<td>' . $book['isbn'] . '</td>';
 	echo '<td>' . $book['publicationYear'] . '</td>';
 	echo '<td>' . $book['description'] . '</td>';
-	echo '<td>' . $books->getStatusName($book['status']) . '</td>';
+	echo '<td>' . $book['count'] . '</td>';
 
 	echo '</tr>';
 }
