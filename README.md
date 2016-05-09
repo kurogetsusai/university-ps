@@ -35,13 +35,13 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 	- [x] libwriter
 	- [x] libauthor
 	- [x] libreservation
-	- [ ] page/home
+	- [x] page/home
 	- [x] page/login
 	- [x] page/logout
 	- [x] page/password
-	- [ ] page/publishers
+	- [x] page/publishers
 	- [x] page/users
-	- [ ] page/writers
+	- [x] page/writers
 - Frontend
 
 	- > możesz sobie tu zrobić jakąś listę jak chcesz, tak tylko na oko napisałem co bedzie potrzebne ;p  
