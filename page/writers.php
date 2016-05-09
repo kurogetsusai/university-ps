@@ -21,10 +21,31 @@ if (!$user->isLoggedIn()) {
 	<main id="page">
 <!--poniżej includuję belkę menu-->
 <?php $loader->loadModule('inc/menu'); ?>
-		<div class="panel panel-primary" style="max-width: 500px; margin: 0px auto; margin-top: 10px;">
-			<div class="panel-heading"><h5>Lista autorów</h5></div>
+	<div class="panel panel-primary" style="margin: 0px auto; margin-top: 10px;">
+			<div class="panel-heading" style="padding: 5px;"><h5>Lista autorów</h5></div>
 			<div class="panel-body">
-				<a href="" class="btn btn-primary">Dodaj autora</a>
+				<a href="<?= GLOBAL_ROOT ?>/writer_form" class="btn btn-primary">Dodaj autora</a>
+				<div class="well" style="margin-top: 10px; padding: 5px;">
+					<h4>Opcje wyświetlania</h4>
+					<form method="post" class="form-inline">
+						<div class="form-group" style="margin: 5px;">
+							<label for="search_name">imię:</label>
+							<input class="form-control" id="search_name" name="search_name" placeholder="imię" />
+						</div>
+						<div class="form-group" style="margin: 5px;">
+							<label for="search_surname">nazwisko:</label>
+							<input class="form-control" id="search_surname" name="search_surname" placeholder="nazwisko" />
+						</div>
+						<div class="form-group" style="margin: 5px;">
+							<label for="search_order">sortowanie:</label>
+							<select name="search_order" id="search_order" class="form-control">
+								<option name="surname_name">nazwisko, imię</option>
+								<option name="name_surname">imię, nazwisko</option>
+							</select>
+						</div>
+						<input type="submit" class="btn btn-primary" value="pokaż">
+					</form>
+				</div>
 				<table class="table table-striped table-bordered" style="margin-top: 10px;">
 					<thead>
 						<th>Nr</th>
