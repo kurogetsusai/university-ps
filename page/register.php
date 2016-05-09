@@ -11,7 +11,7 @@ if ($user->isLoggedIn()) {
 <!DOCTYPE html>
 <html lang="<?= DEFAULT_LANG ?>">
 <head>
-	<title>Logowanie – <?= DEFAULT_TITLE ?></title>
+	<title><?= DEFAULT_TITLE ?></title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="<?= GLOBAL_ROOT ?>/css/main.css">
 </head>

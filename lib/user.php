@@ -10,6 +10,12 @@ class User {
 	# state
 	private $logged_in = false;
 	private $request_data_result = null;
+	private $request_data_strings = array(
+		  0 => '',
+		100 => 'Nieznany błąd (kod 100).',
+		101 => 'Nie istnieje użytkownik o takim loginie.',
+		102 => 'Złe hasło.'
+	);
 
 	# temp
 	private $plain_password;
@@ -125,6 +131,11 @@ class User {
 		return $this->request_data_result;
 	}
 
+	public function getRequestDataString($code = null)
+	{
+		return ($code == null ? $this->request_data_strings[$this->request_data_result] : $this->request_data_strings[$code]);
+	}
+
 	public function clearUserData()
 	{
 		$this->logged_in           = false;
@@ -226,6 +237,32 @@ class User {
 		return true;
 	}
 
+	public function saveUserToDb($mode)
+	{
+		switch ($mode) {
+		case 'all':
+			# TODO
+			break;
+		case 'register':
+			# TODO
+			break;
+		case 'password':
+			# save to db
+			$stmt = $this->db->base->prepare('UPDATE user SET password = :password WHERE id = :id');
+			$stmt->execute(array(
+				':id'       => $this->id,
+				':password' => $this->password
+			));
+
+			# check if that worked
+			if ($stmt->rowCount() !== 1) {
+				return 1;
+			}
+		}
+
+		return 0;
+	}
+
 	public function logInUsingPassword($pesel, $password)
 	{
 		# Return codes:
@@ -269,6 +306,37 @@ class User {
 	public function logOut()
 	{
 		unset($_SESSION['user']);
+	}
+
+	public function changePassword($old, $new)
+	{
+		# Return codes:
+		# 0 - OK
+		# 1 - user is not logged in
+		# 2 - new password is empty
+		# 3 - wrong old password
+		# 4 - can't save new password to the db
+
+		if (!$this->isLoggedIn())
+			return 1;
+
+		if ($new == '')
+			return 2;
+
+		# check old password
+		if (!password_verify($old, $this->password)) {
+			return 3;
+		}
+
+		$this->plain_password = $new;
+		$this->calcPasswordHash();
+		if ($this->saveUserToDb('password') != 0)
+			return 4;
+
+		# update session data
+		$this->setSession();
+
+		return 0;
 	}
 }
 
