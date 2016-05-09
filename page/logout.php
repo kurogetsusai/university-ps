@@ -1,13 +1,14 @@
 <?php
+global $loader;
 global $user;
 
 # entry only for logged in
 if (!$user->isLoggedIn()) {
-	header('Location: ' . GLOBAL_ROOT . '/login');
+	$loader->redirect('/login');
 	exit();
 }
 
 $user->logOut();
-header('Location: ' . (GLOBAL_ROOT != '' ? GLOBAL_ROOT : '/'));
+$loader->redirect('/');
 exit();
 

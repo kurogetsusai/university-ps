@@ -28,6 +28,7 @@ $loader->loadModule('lib/book');
 $loader->loadModule('lib/writer');
 $loader->loadModule('lib/author');
 $loader->loadModule('lib/reservation');
+$loader->loadModule('lib/publisher');
 
 # init database
 $db = new \PS\Database($loader);

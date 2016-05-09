@@ -1,11 +1,10 @@
 <?php
 global $loader;
-global $db;
 global $user;
 
 # entry only for logged in
 if (!$user->isLoggedIn()) {
-	header('Location: ' . GLOBAL_ROOT . '/login');
+	$loader->redirect('/login');
 	exit();
 }
 ?>
@@ -42,9 +41,36 @@ if (!$user->isLoggedIn()) {
 			</div>
 		</div>
 <?php
-# show password change errors
+# change password
 if (isset($_POST['old_password']) && isset($_POST['new_password1']) && isset($_POST['new_password2'])) {
-	echo '<br /><div class="alert alert-danger" role="alert" style="max-width: 500px; margin: 0px auto;">Login code: ' . $user->getRequestDataResult() . '</div>';
+	$text = '';
+	if ($_POST['new_password1'] != $_POST['new_password2']) {
+		$text = 'Nowe hasła są różne.';
+	} else {
+		switch ($user->changePassword($_POST['old_password'], $_POST['new_password1'])) {
+		case 0:
+			break;
+		case 1:
+			$text = 'Użytkownik nie jest zalogowany.';
+			break;
+		case 2:
+			$text = 'Nowe hasło jest puste.';
+			break;
+		case 3:
+			$text = 'Stare hasło jest złe.';
+			break;
+		case 4:
+			$text = 'Nie można zapisać nowego hasła w bazie danych.';
+			break;
+		default:
+			$text = 'Nieznany błąd (kod 10000).';
+		}
+	}
+
+	if ($text == '')
+		echo '<br /><div class="alert alert-success" role="alert" style="max-width: 500px; margin: 0px auto;">Hasło zostało zmienione.</div>';
+	else
+		echo '<br /><div class="alert alert-danger" role="alert" style="max-width: 500px; margin: 0px auto;">Błąd: ' . $text . '</div>';
 }
 ?>
 	</main>

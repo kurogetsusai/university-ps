@@ -15,9 +15,12 @@ class Reservation {
 
 	# status codes
 	private $status_code = array(
-		'oczekujące',
-		'zrealizowane',
-		'anulowane'
+		'oczekuje na zatwierdzenie',
+		'anulowane przez użytkownika',
+		'anulowane przez bibliotekarza',
+		'gotowe do wypożyczenia',
+		'wypożyczone',
+		'oddane (zamknięte)'
 	);
 
 	public function __construct($db,
@@ -142,6 +145,25 @@ class Reservation {
 			         'WHERE reserver = :reserver ' .
 			         'ORDER BY reservation.id';
 			$placeholders = array(':reserver' => $input);
+			break;
+		case 'books+users':
+			$query = 'SELECT reservation.id, ' .
+			                'reservation.reserver, ' .
+			                'reservation.book, ' .
+			                'reservation.status, ' .
+			                'reservation.description, ' .
+			                'book.isbn AS bookIsbn, ' .
+			                'book.title AS bookTitle, ' .
+			                'book.publicationYear AS bookPublicationYear, ' .
+			                'book.publisher AS bookPublisher, ' .
+			                'book.totalCount AS bookTotalCount, ' .
+			                'book.availableCount AS bookAvailableCount, ' .
+			                'book.description AS bookDescription, ' .
+			                'user.name AS reserverName, ' .
+			                'user.surname AS reserverSurname ' .
+			         'FROM reservation INNER JOIN book ON reservation.book = book.id INNER JOIN user ON reservation.reserver = user.id ' .
+			         'ORDER BY reservation.id';
+			$placeholders = array();
 			break;
 		case 'book':
 			$query = 'SELECT id, ' .
