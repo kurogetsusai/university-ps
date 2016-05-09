@@ -40,7 +40,7 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 	- [x] page/logout
 	- [x] page/password
 	- [ ] page/publishers
-	- [ ] page/users
+	- [x] page/users
 	- [ ] page/writers
 - Frontend
 

@@ -1,5 +1,6 @@
 <?php
 global $loader;
+global $db;
 global $user;
 
 # entry only for logged in
@@ -26,38 +27,32 @@ if (!$user->isLoggedIn()) {
 				<a href="" class="btn btn-primary">Dodaj użytkownika</a>
 				<table class="table table-striped table-bordered" style="margin-top: 10px;">
 					<thead>
-						<th>nr</th>
+						<th>Nr</th>
 						<th>Imię i Nazwisko</th>
 						<th>PESEL</th>
 						<th>Adres</th>
 						<th>Uprawnienia</th>
 						<th>Opcje</th>
 					</thead>
-					<tr>
-						<td>6</td>
-						<td>Grzegorz Szymański</td>
-						<td>666666666</td>
-						<td>jakieś tam miasto i ulica</td>
-						<td>Bibliotekarz</td>
-						<td><a href="" class="btn btn-default">edytuj</a></td>
-					</tr>
-					<tr>
-						<td>7</td>
-						<td>Paweł Wąż</td>
-						<td>6666677777</td>
-						<td>jakieś tam miasto i ulica</td>
-						<td>Bibliotekarz</td>
-						<td><a href="" class="btn btn-default">edytuj</a></td>
-					</tr>
+<?php
+$users = new \PS\User($db);
+
+foreach ($users->search('plain') as $u) {
+	echo '<tr>';
+
+	echo '<td>' . $u['id'] . '</td>';
+	echo '<td>' . $u['name'] . ' ' . $u['surname'] . '</td>';
+	echo '<td>' . $u['pesel'] . '</td>';
+	echo '<td>' . $u['street'] . ' ' . $u['houseNumber'] . '<br>' . substr($u['postCode'], 0, 2) . '-' . substr($u['postCode'], 2, 3) . ' ' . $u['town'] . '</td>';
+	echo '<td>' . ($u['permission'] === '0' ? 'użytkownik' : 'bibliotekarz') . '</td>';
+	echo '<td><a href="" class="btn btn-default">edytuj</a></td>';
+
+	echo '</tr>';
+}
+?>
 				</table>
 			</div>
 		</div>
-<?php
-# show password change errors
-if (isset($_POST['old_password']) && isset($_POST['new_password1']) && isset($_POST['new_password2'])) {
-	echo '<br /><div class="alert alert-danger" role="alert" style="max-width: 500px; margin: 0px auto;">Login code: ' . $user->getRequestDataResult() . '</div>';
-}
-?>
 	</main>
 </body>
 </html>
