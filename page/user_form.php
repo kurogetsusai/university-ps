@@ -65,6 +65,10 @@ if (!$user->isLoggedIn()) {
 						<span class="input-group-addon" id="sizing-addon1" style="min-width: 150px;">ulica:</span>
 						<input class="form-control" name="user_street" placeholder="ulica" required />
 					</div><br/>
+					<div class="input-group input-group" style="margin: 0px auto;">
+						<span class="input-group-addon" id="sizing-addon1" style="min-width: 150px;">numer domu:</span>
+						<input class="form-control" name="user_houseNumber" placeholder="ulica" required />
+					</div><br/>
 					<div class="form-group" style="margin: 5px;">
 						<label for="search_surname">typ konta:</label>
 						<select name="user_permissions" class="form-control">

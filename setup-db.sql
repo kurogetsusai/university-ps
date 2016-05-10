@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS user (
 	password VARCHAR(255) NOT NULL,
 	name VARCHAR(32) NOT NULL,
 	surname VARCHAR(32) NOT NULL,
+	email VARCHAR(64) NULL,
+	phone VARCHAR(15) NULL,
 	town VARCHAR(64) NOT NULL,
 	postCode VARCHAR(5) NOT NULL,
 	street VARCHAR(32) NOT NULL,
@@ -57,10 +59,10 @@ CREATE TABLE IF NOT EXISTS reservation (
 ) ENGINE=InnoDB;
 
 -- Some random data to test things
-INSERT IGNORE INTO user (id, pesel, password, name, surname, town, postCode, street, houseNumber, permission) VALUES
-(1, '0', '$2y$11$imUZili8Mlb4cGuH2rel/eWJ9sG1a/O6Nd.p944hh1NpOmvzqCha6', 'Charlie', 'Root', 'Debug Valley', '00000', 'Test', '1', 1),
-(2, '1', '$2y$11$/ArvUc3R1RqjRh8k4Ptuxe6sZuzvg36FGx0geSvwVhrwdvsOSfgjG', 'Lame', 'User', 'Debug Valley', '00000', 'Test', '2', 0),
-(3, '2', '$2y$11$/ArvUc3R1RqjRh8k4Ptuxe6sZuzvg36FGx0geSvwVhrwdvsOSfgjG', 'Pro', 'User', 'Debug Valley', '00000', 'Test', '3', 0);
+INSERT IGNORE INTO user (id, pesel, password, name, surname, email, phone, town, postCode, street, houseNumber, permission) VALUES
+(1, '0', '$2y$11$imUZili8Mlb4cGuH2rel/eWJ9sG1a/O6Nd.p944hh1NpOmvzqCha6', 'Charlie', 'Root', 'root@localhost', '123456789', 'Debug Valley', '00000', 'Test', '1', 1),
+(2, '1', '$2y$11$/ArvUc3R1RqjRh8k4Ptuxe6sZuzvg36FGx0geSvwVhrwdvsOSfgjG', 'Lame', 'User', 'lame@localhost', '987654321', 'Debug Valley', '00000', 'Test', '2', 0),
+(3, '2', '$2y$11$/ArvUc3R1RqjRh8k4Ptuxe6sZuzvg36FGx0geSvwVhrwdvsOSfgjG', 'Pro', 'User', 'pro@localhost', '519283764', 'Debug Valley', '00000', 'Test', '3', 0);
 INSERT IGNORE INTO publisher (id, name) VALUES
 (1, 'Wydawnictwo Test'),
 (2, 'Super książki');

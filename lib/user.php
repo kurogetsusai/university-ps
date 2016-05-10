@@ -26,6 +26,8 @@ class User {
 	private $password;
 	private $name;
 	private $surname;
+	private $email;
+	private $phone;
 	private $town;
 	private $street;
 	private $houseNumber;
@@ -56,6 +58,8 @@ class User {
 			'password'    => $this->password,
 			'name'        => $this->name,
 			'surname'     => $this->surname,
+			'email'       => $this->email,
+			'phone'       => $this->phone,
 			'town'        => $this->town,
 			'street'      => $this->street,
 			'houseNumber' => $this->houseNumber,
@@ -70,6 +74,8 @@ class User {
 		$this->password    = $_SESSION['user']['password'];
 		$this->name        = $_SESSION['user']['name'];
 		$this->surname     = $_SESSION['user']['surname'];
+		$this->email       = $_SESSION['user']['email'];
+		$this->phone       = $_SESSION['user']['phone'];
 		$this->town        = $_SESSION['user']['town'];
 		$this->street      = $_SESSION['user']['street'];
 		$this->houseNumber = $_SESSION['user']['houseNumber'];
@@ -104,6 +110,16 @@ class User {
 	public function getFullName()
 	{
 		return $this->name . ' ' . $this->surname;
+	}
+
+	public function getEmail()
+	{
+		return $this->email;
+	}
+
+	public function getPhone()
+	{
+		return $this->phone;
 	}
 
 	public function getTown()
@@ -146,6 +162,8 @@ class User {
 		$this->password            = null;
 		$this->name                = null;
 		$this->surname             = null;
+		$this->email               = null;
+		$this->phone               = null;
 		$this->town                = null;
 		$this->street              = null;
 		$this->houseNumber         = null;
@@ -229,6 +247,8 @@ class User {
 		$this->password    = $row['password'];
 		$this->name        = $row['name'];
 		$this->surname     = $row['surname'];
+		$this->email       = $row['email'];
+		$this->phone       = $row['phone'];
 		$this->town        = $row['town'];
 		$this->street      = $row['street'];
 		$this->houseNumber = $row['houseNumber'];
