@@ -22,9 +22,56 @@ if (!$user->isLoggedIn()) {
 <!--poniżej includuję belkę menu-->
 <?php $loader->loadModule('inc/menu'); ?>
 <?php if ($user->getPermission() === 1) { ?>
-		<div class="panel panel-primary" style="display: inline-block; min-width: 500px; margin: 10px auto;">
-			<div class="panel-heading"><h5>Wszystkie zamówienia</h5></div>
+		<div class="panel panel-primary" style="margin: 10px auto;">
+			<div class="panel-heading" style="padding: 5px;"><h5>Wszystkie zamówienia</h5></div>
 			<div class="panel-body">
+				<a href="<?= GLOBAL_ROOT ?>/order_form" class="btn btn-primary">Dodaj zamówienie/wypożyczenie</a>
+				<div class="well" style="margin-top: 10px; padding: 5px;">
+					<h4>Opcje wyświetlania</h4>
+					<form method="post" class="form-inline">
+						<div class="form-group" style="margin: 5px;">
+							<label for="search_title">tytuł:</label>
+							<input class="form-control" id="search_title" name="search_title" placeholder="tytuł" />
+						</div>
+						<div class="form-group" style="margin: 5px;">
+							<label for="search_name">imię autora:</label>
+							<input class="form-control" id="search_author_name" name="search_author_name" placeholder="imię" />
+						</div>
+						<div class="form-group" style="margin: 5px;">
+							<label for="search_surname">nazwisko autora:</label>
+							<input class="form-control" id="search_author_surname" name="search_author_surname" placeholder="nazwisko" />
+						</div>
+						<div class="form-group" style="margin: 5px;">
+							<label for="search_name">imię czytelnika:</label>
+							<input class="form-control" id="search_user_name" name="search_user_name" placeholder="imię" />
+						</div>
+						<div class="form-group" style="margin: 5px;">
+							<label for="search_surname">nazwisko czytelnika:</label>
+							<input class="form-control" id="search_user_surname" name="search_user_surname" placeholder="nazwisko" />
+						</div>
+						<div class="form-group" style="margin: 5px;">
+							<label for="search_status">status:</label>
+							<select name="search_status" class="form-control">
+								<option>wszystkie</option>
+								<option>oczekujące</option>
+								<option>gotowe do odbioru</option>
+								<option>anulowane (czytelnik)</option>
+								<option>anulowane (bibliotekarz)</option>
+								<option>oddane (zakończone)</option>
+							</select>
+						</div>
+						<div class="form-group" style="margin: 5px;">
+							<label for="search_order">sortowanie:</label>
+							<select name="search_order" class="form-control">
+								<option value="title">tytuł</option>
+								<option value="title">nazwisko autora</option>
+								<option value="title">ISBN</option>
+								<option value="title">rok</option>
+							</select>
+						</div>
+						<input type="submit" class="btn btn-primary" value="pokaż">
+					</form>
+				</div>
 				<table class="table table-striped table-bordered">
 					<thead>
 						<th>Nr</th>
@@ -61,7 +108,9 @@ foreach ($reservations->search('books+users') as $reservation) {
 
 	echo '<td>' . $reservations->getStatusName($reservation['status']) . '</td>';
 	echo '<td>' . $reservation['description'] . '</td>';
-	echo '<td></td>';
+	echo '<td>';
+	echo '<a class="btn btn-default" href="' . GLOBAL_ROOT . '/status_form" role="button">zmień status</a>';
+	echo '</td>';
 
 	echo '</tr>';
 }
