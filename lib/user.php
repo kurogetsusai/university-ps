@@ -26,6 +26,8 @@ class User {
 	private $password;
 	private $name;
 	private $surname;
+	private $email;
+	private $phone;
 	private $town;
 	private $street;
 	private $houseNumber;
@@ -56,6 +58,8 @@ class User {
 			'password'    => $this->password,
 			'name'        => $this->name,
 			'surname'     => $this->surname,
+			'email'       => $this->email,
+			'phone'       => $this->phone,
 			'town'        => $this->town,
 			'street'      => $this->street,
 			'houseNumber' => $this->houseNumber,
@@ -70,6 +74,8 @@ class User {
 		$this->password    = $_SESSION['user']['password'];
 		$this->name        = $_SESSION['user']['name'];
 		$this->surname     = $_SESSION['user']['surname'];
+		$this->email       = $_SESSION['user']['email'];
+		$this->phone       = $_SESSION['user']['phone'];
 		$this->town        = $_SESSION['user']['town'];
 		$this->street      = $_SESSION['user']['street'];
 		$this->houseNumber = $_SESSION['user']['houseNumber'];
@@ -104,6 +110,16 @@ class User {
 	public function getFullName()
 	{
 		return $this->name . ' ' . $this->surname;
+	}
+
+	public function getEmail()
+	{
+		return $this->email;
+	}
+
+	public function getPhone()
+	{
+		return $this->phone;
 	}
 
 	public function getTown()
@@ -146,6 +162,8 @@ class User {
 		$this->password            = null;
 		$this->name                = null;
 		$this->surname             = null;
+		$this->email               = null;
+		$this->phone               = null;
 		$this->town                = null;
 		$this->street              = null;
 		$this->houseNumber         = null;
@@ -229,6 +247,8 @@ class User {
 		$this->password    = $row['password'];
 		$this->name        = $row['name'];
 		$this->surname     = $row['surname'];
+		$this->email       = $row['email'];
+		$this->phone       = $row['phone'];
 		$this->town        = $row['town'];
 		$this->street      = $row['street'];
 		$this->houseNumber = $row['houseNumber'];
@@ -339,18 +359,67 @@ class User {
 		return 0;
 	}
 
-	public function search($mode, $input = null)
+	public function search($mode, $input = null, $filter = null, $order = 0)
 	{
 		# missing parameters
 		if ($mode == null)
 			return false;
 
+		$placeholders = [];
+		$filters = '';
+
+		# parse filters
+		$i = 0;
+		if ($filter != null)
+			foreach ($filter as $key => $item) {
+				# column whitelist
+				switch ($key) {
+				case 'name':
+				case 'surname':
+				case 'pesel':
+				case 'town':
+				case 'street':
+				case 'permission':
+					$filter_key = $key;
+					break;
+				default:
+					$filter_key = null;
+				}
+
+				if ($filter_key == null)
+					break;
+
+				$placeholders[':filter_' . $i] = '%' . $item . '%';
+				if ($i == 0)
+					$filters .= ' WHERE ' . $filter_key . ' LIKE :filter_' . $i;
+				else
+					$filters .= ' AND ' . $filter_key . ' LIKE :filter_' . $i;
+				++$i;
+			}
+
+		# order mode
+		switch ($order) {
+		default:
+		case 0:
+			$orders = 'pesel';
+			break;
+		case 1:
+			$orders = 'name, surname';
+			break;
+		case 2:
+			$orders = 'surname, name';
+			break;
+		case 3:
+			$orders = 'permission';
+			break;
+		}
+
 		# get query
 		switch ($mode) {
 		case 'plain':
 			$query = 'SELECT * ' .
-			         'FROM user';
-			$placeholders = array();
+			         'FROM user' . $filters . ' ' .
+			         'ORDER BY ' . $orders;
 			break;
 		}
 

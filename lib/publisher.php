@@ -63,18 +63,44 @@ class Publisher {
 		return true;
 	}
 
-	public function search($mode, $input = null)
+	public function search($mode, $input = null, $filter = null)
 	{
 		# missing parameters
 		if ($mode == null)
 			return false;
 
+		$placeholders = [];
+		$filters = '';
+
+		# parse filters
+		$i = 0;
+		if ($filter != null)
+			foreach ($filter as $key => $item) {
+				# column whitelist
+				switch ($key) {
+				case 'name':
+					$filter_key = $key;
+					break;
+				default:
+					$filter_key = null;
+				}
+
+				if ($filter_key == null)
+					break;
+
+				$placeholders[':filter_' . $i] = '%' . $item . '%';
+				if ($i == 0)
+					$filters .= ' WHERE ' . $filter_key . ' LIKE :filter_' . $i;
+				else
+					$filters .= ' AND ' . $filter_key . ' LIKE :filter_' . $i;
+				++$i;
+			}
+
 		# get query
 		switch ($mode) {
 		case 'plain':
 			$query = 'SELECT * ' .
-			         'FROM publisher';
-			$placeholders = array();
+			         'FROM publisher' . $filters;
 			break;
 		}
 

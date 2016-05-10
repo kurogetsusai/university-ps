@@ -76,18 +76,57 @@ class Writer {
 		return true;
 	}
 
-	public function search($mode, $input = null)
+	public function search($mode, $input = null, $filter = null, $order = 0)
 	{
 		# missing parameters
 		if ($mode == null)
 			return false;
 
+		$placeholders = [];
+		$filters = '';
+
+		# parse filters
+		$i = 0;
+		if ($filter != null)
+			foreach ($filter as $key => $item) {
+				# column whitelist
+				switch ($key) {
+				case 'name':
+				case 'surname':
+					$filter_key = $key;
+					break;
+				default:
+					$filter_key = null;
+				}
+
+				if ($filter_key == null)
+					break;
+
+				$placeholders[':filter_' . $i] = '%' . $item . '%';
+				if ($i == 0)
+					$filters .= ' WHERE ' . $filter_key . ' LIKE :filter_' . $i;
+				else
+					$filters .= ' AND ' . $filter_key . ' LIKE :filter_' . $i;
+				++$i;
+			}
+
+		# order mode
+		switch ($order) {
+		default:
+		case 0:
+			$orders = 'surname, name';
+			break;
+		case 1:
+			$orders = 'name, surname';
+			break;
+		}
+
 		# get query
 		switch ($mode) {
 		case 'plain':
 			$query = 'SELECT * ' .
-			         'FROM writer';
-			$placeholders = array();
+			         'FROM writer' . $filters . ' ' .
+			         'ORDER BY ' . $orders;
 			break;
 		}
 
