@@ -71,7 +71,7 @@ if (!$user->isLoggedIn()) {
 					</div><br/>
 					<div class="form-group" style="margin: 5px;">
 						<label for="search_surname">typ konta:</label>
-						<select name="user_permissions" class="form-control">
+						<select name="user_permission" class="form-control">
 							<option name="user">czytelnik</option>
 							<option name="librarian">bibliotekarz</option>
 						</select>

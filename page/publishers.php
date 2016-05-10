@@ -30,7 +30,7 @@ if (!$user->isLoggedIn()) {
 					<form method="post" class="form-inline">
 						<div class="form-group" style="margin: 5px;">
 							<label for="search_name">nazwa:</label>
-							<input class="form-control" id="search_name" name="search_name" placeholder="nazwa" />
+							<input class="form-control" id="search_name" name="search_name" placeholder="nazwa"<?= ((isset($_POST['search_name']) and $_POST['search_name'] != '') ? ' value="' . $_POST['search_name'] . '"' : '') ?> />
 						</div>
 						<input type="submit" class="btn btn-primary" value="pokaż">
 					</form>
@@ -42,9 +42,13 @@ if (!$user->isLoggedIn()) {
 						<th>Opcje</th>
 					</thead>
 <?php
+$filter = [];
+if (isset($_POST['search_name']) and $_POST['search_name'] != '')
+	$filter['name'] = $_POST['search_name'];
+
 $publishers = new \PS\Publisher($db);
 
-foreach ($publishers->search('plain') as $publisher) {
+foreach ($publishers->search('plain', null, $filter) as $publisher) {
 	echo '<tr>';
 
 	echo '<td>' . $publisher['id'] . '</td>';

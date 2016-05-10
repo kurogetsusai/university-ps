@@ -30,17 +30,17 @@ if (!$user->isLoggedIn()) {
 					<form method="post" class="form-inline">
 						<div class="form-group" style="margin: 5px;">
 							<label for="search_name">imię:</label>
-							<input class="form-control" id="search_name" name="search_name" placeholder="imię" />
+							<input class="form-control" id="search_name" name="search_name" placeholder="imię"<?= ((isset($_POST['search_name']) and $_POST['search_name'] != '') ? ' value="' . $_POST['search_name'] . '"' : '') ?> />
 						</div>
 						<div class="form-group" style="margin: 5px;">
 							<label for="search_surname">nazwisko:</label>
-							<input class="form-control" id="search_surname" name="search_surname" placeholder="nazwisko" />
+							<input class="form-control" id="search_surname" name="search_surname" placeholder="nazwisko"<?= ((isset($_POST['search_surname']) and $_POST['search_surname'] != '') ? ' value="' . $_POST['search_surname'] . '"' : '') ?> />
 						</div>
 						<div class="form-group" style="margin: 5px;">
 							<label for="search_order">sortowanie:</label>
 							<select name="search_order" id="search_order" class="form-control">
 								<option name="surname_name">nazwisko, imię</option>
-								<option name="name_surname">imię, nazwisko</option>
+								<option name="name_surname"<?= ((isset($_POST['search_order']) and $_POST['search_order'] == 'imię, nazwisko') ? ' selected' : '') ?>>imię, nazwisko</option>
 							</select>
 						</div>
 						<input type="submit" class="btn btn-primary" value="pokaż">
@@ -49,17 +49,31 @@ if (!$user->isLoggedIn()) {
 				<table class="table table-striped table-bordered" style="margin-top: 10px;">
 					<thead>
 						<th>Nr</th>
-						<th>Imię i Nazwisko</th>
+						<th>Imię</th>
+						<th>Nazwisko</th>
 						<th>Opcje</th>
 					</thead>
 <?php
+$filter = [];
+if (isset($_POST['search_name']) and $_POST['search_name'] != '')
+	$filter['name'] = $_POST['search_name'];
+if (isset($_POST['search_surname']) and $_POST['search_surname'] != '')
+	$filter['surname'] = $_POST['search_surname'];
+
+$order = 0;
+if (isset($_POST['search_order'])) {
+	if ($_POST['search_order'] == 'imię, nazwisko')
+		$order = 1;
+}
+
 $writers = new \PS\Writer($db);
 
-foreach ($writers->search('plain') as $writer) {
+foreach ($writers->search('plain', null, $filter, $order) as $writer) {
 	echo '<tr>';
 
 	echo '<td>' . $writer['id'] . '</td>';
-	echo '<td>' . $writer['name'] . ' ' . $writer['surname'] . '</td>';
+	echo '<td>' . $writer['name'] . '</td>';
+	echo '<td>' . $writer['surname'] . '</td>';
 	echo '<td><a href="" class="btn btn-default">edytuj</a></td>';
 
 	echo '</tr>';

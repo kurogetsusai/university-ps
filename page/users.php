@@ -30,39 +30,39 @@ if (!$user->isLoggedIn()) {
 					<form method="post" class="form-inline">
 						<div class="form-group" style="margin: 5px;">
 							<label for="search_name">imię:</label>
-							<input class="form-control" id="search_name" name="search_name" placeholder="imię" />
+							<input class="form-control" id="search_name" name="search_name" placeholder="imię"<?= ((isset($_POST['search_name']) and $_POST['search_name'] != '') ? ' value="' . $_POST['search_name'] . '"' : '') ?> />
 						</div>
 						<div class="form-group" style="margin: 5px;">
 							<label for="search_surname">nazwisko:</label>
-							<input class="form-control" id="search_surname" name="search_surname" placeholder="nazwisko" />
+							<input class="form-control" id="search_surname" name="search_surname" placeholder="nazwisko"<?= ((isset($_POST['search_surname']) and $_POST['search_surname'] != '') ? ' value="' . $_POST['search_surname'] . '"' : '') ?> />
 						</div>
 						<div class="form-group" style="margin: 5px;">
 							<label for="search_pesel">PESEL:</label>
-							<input class="form-control" id="search_pesel" name="search_pesel" placeholder="nazwisko" />
+							<input class="form-control" id="search_pesel" name="search_pesel" placeholder="pesel"<?= ((isset($_POST['search_pesel']) and $_POST['search_pesel'] != '') ? ' value="' . $_POST['search_pesel'] . '"' : '') ?> />
 						</div>
 						<div class="form-group" style="margin: 5px;">
 							<label for="search_town">miasto:</label>
-							<input class="form-control" id="search_town" name="search_town" placeholder="miasto" />
+							<input class="form-control" id="search_town" name="search_town" placeholder="miasto"<?= ((isset($_POST['search_town']) and $_POST['search_town'] != '') ? ' value="' . $_POST['search_town'] . '"' : '') ?> />
 						</div>
 						<div class="form-group" style="margin: 5px;">
 							<label for="search_street">ulica:</label>
-							<input class="form-control" id="search_street" name="search_street" placeholder="ulica" />
+							<input class="form-control" id="search_street" name="search_street" placeholder="ulica"<?= ((isset($_POST['search_street']) and $_POST['search_street'] != '') ? ' value="' . $_POST['search_street'] . '"' : '') ?> />
 						</div>
 						<div class="form-group" style="margin: 5px;">
 							<label for="search_surname">typ konta:</label>
-							<select name="search_permissions" id="search_permissions" class="form-control">
+							<select name="search_permission" id="search_permission" class="form-control">
 								<option name="all">wszystkie</option>
-								<option name="user">czytelnik</option>
-								<option name="librarian">bibliotekarz</option>
+								<option name="user"<?= ((isset($_POST['search_permission']) and $_POST['search_permission'] == 'czytelnik') ? ' selected' : '') ?>>czytelnik</option>
+								<option name="librarian"<?= ((isset($_POST['search_permission']) and $_POST['search_permission'] == 'bibliotekarz') ? ' selected' : '') ?>>bibliotekarz</option>
 							</select>
 						</div>
 						<div class="form-group" style="margin: 5px;">
 							<label for="search_order">sortowanie:</label>
 							<select name="search_order" id="search_order" class="form-control">
 								<option name="pesel">PESEL</option>
-								<option name="name_surname">imię, nazwisko</option>
-								<option name="surname_name">nazwisko, imię</option>
-								<option name="permissions">typ konta</option>
+								<option name="name_surname"<?= ((isset($_POST['search_order']) and $_POST['search_order'] == 'imię, nazwisko') ? ' selected' : '') ?>>imię, nazwisko</option>
+								<option name="surname_name"<?= ((isset($_POST['search_order']) and $_POST['search_order'] == 'nazwisko, imię') ? ' selected' : '') ?>>nazwisko, imię</option>
+								<option name="permission"<?= ((isset($_POST['search_order']) and $_POST['search_order'] == 'typ konta') ? ' selected' : '') ?>>typ konta</option>
 							</select>
 						</div>
 						<input type="submit" class="btn btn-primary" value="pokaż">
@@ -78,9 +78,40 @@ if (!$user->isLoggedIn()) {
 						<th>Opcje</th>
 					</thead>
 <?php
+$filter = [];
+if (isset($_POST['search_name']) and $_POST['search_name'] != '')
+	$filter['name'] = $_POST['search_name'];
+if (isset($_POST['search_surname']) and $_POST['search_surname'] != '')
+	$filter['surname'] = $_POST['search_surname'];
+if (isset($_POST['search_pesel']) and $_POST['search_pesel'] != '')
+	$filter['pesel'] = $_POST['search_pesel'];
+if (isset($_POST['search_town']) and $_POST['search_town'] != '')
+	$filter['town'] = $_POST['search_town'];
+if (isset($_POST['search_street']) and $_POST['search_street'] != '')
+	$filter['street'] = $_POST['search_street'];
+if (isset($_POST['search_permission']) and $_POST['search_permission'] != '')
+	switch ($_POST['search_permission']) {
+	case 'czytelnik':
+		$filter['permission'] = 0;
+		break;
+	case 'bibliotekarz':
+		$filter['permission'] = 1;
+		break;
+	}
+
+$order = 0;
+if (isset($_POST['search_order'])) {
+	if ($_POST['search_order'] == 'imię, nazwisko')
+		$order = 1;
+	if ($_POST['search_order'] == 'nazwisko, imię')
+		$order = 2;
+	if ($_POST['search_order'] == 'typ konta')
+		$order = 3;
+}
+
 $users = new \PS\User($db);
 
-foreach ($users->search('plain') as $u) {
+foreach ($users->search('plain', null, $filter, $order) as $u) {
 	echo '<tr>';
 
 	echo '<td>' . $u['id'] . '</td>';
