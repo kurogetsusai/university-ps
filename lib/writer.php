@@ -76,6 +76,78 @@ class Writer {
 		return true;
 	}
 
+	public function setData($data)
+	{
+		foreach ($data as $key => $item)
+			switch ($key) {
+			case 'id':
+				$this->id = $item;
+				break;
+			case 'name':
+				$this->name = $item;
+				break;
+			case 'surname':
+				$this->surname = $item;
+				break;
+			}
+	}
+
+	public function saveDataToDb($mode, $input)
+	{
+		switch ($mode) {
+		case 'new':
+			# save to db
+			$stmt = $this->db->base->prepare('INSERT INTO writer (name, surname) VALUES (:name, :surname)');
+			$stmt->execute(array(
+				':name'    => $this->name,
+				':surname' => $this->surname
+			));
+
+			# check if that worked
+			if ($stmt->rowCount() !== 1) {
+				return false;
+			}
+
+			# get ID
+			$this->id = $this->db->base->lastInsertId();
+
+			break;
+		case 'array_keys+object_properties':
+			$placeholders = [];
+			$data = '';
+			$first = true;
+			foreach ($input as $key => $item)
+				if (
+					$key == 'name' or
+					$key == 'surname'
+				) {
+					$placeholders[':' . $key] = $this->$key;
+					if ($first)
+						$first = false;
+					else
+						$data .= ', ';
+					$data .= $key . ' = :' . $key;
+				}
+
+			if (empty($placeholders))
+				return false;
+
+			# save to db
+			$stmt = $this->db->base->prepare('UPDATE writer SET ' . $data . ' WHERE id = :id');
+			$placeholders[':id'] = $this->id;
+			$stmt->execute($placeholders);
+
+			# check if that worked
+			if ($stmt->rowCount() !== 1) {
+				return false;
+			}
+
+			break;
+		}
+
+		return true;
+	}
+
 	public function search($mode, $input = null, $filter = null, $order = 0)
 	{
 		# missing parameters

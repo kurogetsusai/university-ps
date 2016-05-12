@@ -8,6 +8,12 @@ if (!$user->isLoggedIn()) {
 	$loader->redirect('/login');
 	exit();
 }
+
+# entry only for admins
+if ($user->getPermission() !== 1) {
+	$loader->redirect('/');
+	exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= DEFAULT_LANG ?>">
@@ -74,7 +80,9 @@ foreach ($writers->search('plain', null, $filter, $order) as $writer) {
 	echo '<td>' . $writer['id'] . '</td>';
 	echo '<td>' . $writer['name'] . '</td>';
 	echo '<td>' . $writer['surname'] . '</td>';
-	echo '<td><a href="" class="btn btn-default">edytuj</a></td>';
+	echo '<td><a href="' . GLOBAL_ROOT .
+	'/writer_form/' . $writer['id'] . '-' . str_replace(' ', '_', mb_strtolower($writer['name'] . ' ' . $writer['surname'])) .
+	'" class="btn btn-default">edytuj</a></td>';
 
 	echo '</tr>';
 }
