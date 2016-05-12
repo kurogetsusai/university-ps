@@ -1,6 +1,5 @@
 <?php
 global $loader;
-global $db;
 global $user;
 
 # entry only for logged in
@@ -24,9 +23,9 @@ if (!$user->isLoggedIn()) {
 		<div class="panel panel-primary" style="margin: 10px auto;">
 			<div class="panel-heading" style="padding: 5px;"><h5>Lista książek</h5></div>
 			<div class="panel-body">
-				<?php if($user->getPermission() == 1) {?>
+<?php if ($user->getPermission() === 1) { ?>
 				<a href="<?= GLOBAL_ROOT ?>/book_form" class="btn btn-primary">Dodaj książkę</a>
-				<?php } ?>
+<?php } ?>
 				<div class="well" style="margin-top: 10px; padding: 5px;">
 					<h4>Opcje wyświetlania</h4>
 					<form method="post" class="form-inline">
@@ -84,9 +83,9 @@ if (!$user->isLoggedIn()) {
 						<td>
 							<a href="<?= GLOBAL_ROOT ?>/book_details" class="btn btn-default">szczegóły</a>
 							<a href="" class="btn btn-default">zamów</a> <!-- jeśli dostępna ilość > 0 -->
-							<?php if($user->getPermission() == 1) { ?>
+<?php if ($user->getPermission() === 1) { ?>
 							<a href="" class="btn btn-default">edytuj</a>
-							<?php } ?>
+<?php } ?>
 						</td>
 					</tr>
 				</table>

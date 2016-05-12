@@ -1,11 +1,10 @@
 <?php
 global $loader;
-global $db;
 global $user;
 
 # entry only for logged in
 if (!$user->isLoggedIn()) {
-	header('Location: ' . GLOBAL_ROOT . '/login');
+	$loader->redirect('/login');
 	exit();
 }
 ?>
@@ -34,12 +33,6 @@ if (!$user->isLoggedIn()) {
 				</form>
 			</div>
 		</div>
-<?php
-# show password change errors
-if (isset($_POST['old_password']) && isset($_POST['new_password1']) && isset($_POST['new_password2'])) {
-	echo '<br /><div class="alert alert-danger" role="alert" style="max-width: 500px; margin: 0px auto;">Login code: ' . $user->getRequestDataResult() . '</div>';
-}
-?>
 	</main>
 </body>
 </html>
