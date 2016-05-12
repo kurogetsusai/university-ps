@@ -25,7 +25,7 @@ if (!$user->isLoggedIn()) {
 		<div class="panel panel-primary" style="margin: 10px auto;">
 			<div class="panel-heading" style="padding: 5px;"><h5>Wszystkie zamówienia</h5></div>
 			<div class="panel-body">
-				<a href="<?= GLOBAL_ROOT ?>/order_form" class="btn btn-primary">Dodaj zamówienie/wypożyczenie</a>
+				<a href="<?= GLOBAL_ROOT ?>/reservation_form" class="btn btn-primary">Dodaj zamówienie/wypożyczenie</a>
 				<div class="well" style="margin-top: 10px; padding: 5px;">
 					<h4>Opcje wyświetlania</h4>
 					<form method="post" class="form-inline">
@@ -109,7 +109,7 @@ foreach ($reservations->search('books+users') as $reservation) {
 	echo '<td>' . $reservations->getStatusName($reservation['status']) . '</td>';
 	echo '<td>' . $reservation['description'] . '</td>';
 	echo '<td>';
-	echo '<a class="btn btn-default" href="' . GLOBAL_ROOT . '/status_form" role="button">zmień status</a>';
+	echo '<a class="btn btn-default" href="' . GLOBAL_ROOT . '/reservation_status" role="button">zmień status</a>';
 	echo '</td>';
 
 	echo '</tr>';

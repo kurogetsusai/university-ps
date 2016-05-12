@@ -36,12 +36,20 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 	- [x] libauthor
 	- [x] libreservation
 	- [x] page/home
+	- [ ] page/reservation_form
+	- [ ] page/reservation_status
 	- [x] page/login
 	- [x] page/logout
 	- [x] page/password
 	- [x] page/publishers
+	- [ ] page/publisher_form
 	- [x] page/users
+	- [ ] page/user_form
 	- [x] page/writers
+	- [ ] page/writer_form
+	- [ ] page/books
+	- [ ] page/book_form
+	- [ ] page/book_details
 - Frontend
 
 	- > możesz sobie tu zrobić jakąś listę jak chcesz, tak tylko na oko napisałem co bedzie potrzebne ;p  
