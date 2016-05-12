@@ -47,9 +47,9 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 	- [ ] page/user_form
 	- [x] page/writers
 	- [x] page/writer_form
-	- [ ] page/books
+	- [x] page/books
 	- [ ] page/book_form
-	- [ ] page/book_details
+	- [x] page/book_details
 - Frontend
 
 	- > możesz sobie tu zrobić jakąś listę jak chcesz, tak tylko na oko napisałem co bedzie potrzebne ;p  

@@ -124,24 +124,144 @@ class Book {
 		return true;
 	}
 
-	public function search($mode)
+	public function setData($data)
+	{
+		foreach ($data as $key => $item)
+			switch ($key) {
+			case 'id':
+				$this->id = $item;
+				break;
+			case 'isbn':
+				$this->isbn = $item;
+				break;
+			case 'title':
+				$this->title = $item;
+				break;
+			case 'publicationYear':
+				$this->publicationYear = $item;
+				break;
+			case 'publisher':
+				$this->publisher = $item;
+				break;
+			case 'totalCount':
+				$this->totalCount = $item;
+				break;
+			case 'availableCount':
+				$this->availableCount = $item;
+				break;
+			case 'description':
+				$this->description = $item;
+				break;
+			}
+	}
+
+	public function saveDataToDb($mode, $input)
+	{
+		return false;	# TODO
+	}
+
+	public function search($mode, $input = null, $filter = null, $order = 0)
 	{
 		# missing parameters
 		if ($mode == null)
 			return false;
 
+		$placeholders = [];
+		$filters = '';
+
+		# parse filters
+		$i = 0;
+		if ($filter != null)
+			foreach ($filter as $key => $item) {
+				# column whitelist
+				switch ($key) {
+				case 'title':
+				case 'isbn':
+					$filter_key = $key;
+					break;
+				case 'publisherName':
+					if ($mode == 'plain+publishers' or $mode == 'books+publishers+authors')
+						$filter_key = 'publisher.name';
+					else
+						$filter_key = null;
+					break;
+				case 'authorsName':
+					if ($mode == 'books+publishers+authors')
+						$filter_key =
+							'(SELECT GROUP_CONCAT(writer.name) ' .
+							'FROM author INNER JOIN writer ON author.writer = writer.id ' .
+							'WHERE author.book = book.id ' .
+							'LIMIT 1)';
+					else
+						$filter_key = null;
+					break;
+				case 'authorsSurname':
+					if ($mode == 'books+publishers+authors')
+						$filter_key =
+							'(SELECT GROUP_CONCAT(writer.surname) ' .
+							'FROM author INNER JOIN writer ON author.writer = writer.id ' .
+							'WHERE author.book = book.id ' .
+							'LIMIT 1)';
+					else
+						$filter_key = null;
+					break;
+				default:
+					$filter_key = null;
+				}
+
+				if ($filter_key == null)
+					break;
+
+				$placeholders[':filter_' . $i] = '%' . $item . '%';
+				if ($i == 0)
+					$filters .= ' WHERE ' . $filter_key . ' LIKE :filter_' . $i;
+				else
+					$filters .= ' AND ' . $filter_key . ' LIKE :filter_' . $i;
+				++$i;
+			}
+
+		# order mode
+		switch ($order) {
+		default:
+		case 0:
+			$orders = 'title';
+			break;
+		case 1:
+			$orders = 'authorsSurname';
+			break;
+		case 2:
+			$orders = 'isbn';
+			break;
+		case 3:
+			$orders = 'publicationYear';
+			break;
+		}
+
 		# get query
 		switch ($mode) {
 		case 'plain':
-			$query = 'SELECT id, isbn, title, publicationYear, publisher, totalCount, availableCount, description ' .
-			         'FROM book';
-			$placeholders = array();
+			$query = 'SELECT * ' .
+			         'FROM book' . $filters . ' ' .
+			         'ORDER BY ' . $orders;
 			break;
 		case 'plain+publishers':
 			$query = 'SELECT book.id, book.isbn, book.title, book.publicationYear, book.publisher, book.totalCount, book.availableCount, book.description, publisher.name AS publisherName ' .
-			         'FROM book INNER JOIN publisher ON book.publisher = publisher.id ' .
-			         'ORDER BY book.id';
-			$placeholders = array();
+			         'FROM book INNER JOIN publisher ON book.publisher = publisher.id' . $filters . ' ' .
+			         'ORDER BY ' . $orders;
+			break;
+		case 'books+publishers+authors':
+			$query = 'SELECT book.id, book.isbn, book.title, book.publicationYear, book.publisher, book.totalCount, book.availableCount, book.description, ' .
+			         'publisher.name AS publisherName, ' .
+			         '(SELECT GROUP_CONCAT(writer.name) ' .
+			         'FROM author INNER JOIN writer ON author.writer = writer.id ' .
+			         'WHERE author.book = book.id ' .
+			         'LIMIT 1) AS authorsName, ' .
+			         '(SELECT GROUP_CONCAT(writer.surname) ' .
+			         'FROM author INNER JOIN writer ON author.writer = writer.id ' .
+			         'WHERE author.book = book.id ' .
+			         'LIMIT 1) AS authorsSurname ' .
+			         'FROM book INNER JOIN publisher ON book.publisher = publisher.id' . $filters . ' ' .
+			         'ORDER BY ' . $orders;
 			break;
 		}
 
