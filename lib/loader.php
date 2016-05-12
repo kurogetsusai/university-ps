@@ -59,9 +59,10 @@ class Loader {
 
 	public function redirect($destination)
 	{
+		$dest = explode('/', $destination);
 		if ($destination == '/')
 			$location = (GLOBAL_ROOT != '' ? GLOBAL_ROOT : '/');
-		elseif (is_readable('page' . $destination . '.php'))
+		elseif (is_readable('page' . $dest[1] . '.php'))
 			$location = GLOBAL_ROOT . $destination;
 		else
 			$location = $destination;
