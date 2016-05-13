@@ -8,6 +8,12 @@ if (!$user->isLoggedIn()) {
 	$loader->redirect('/login');
 	exit();
 }
+
+# entry only for admins
+if ($user->getPermission() !== 1) {
+	$loader->redirect('/');
+	exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= DEFAULT_LANG ?>">
@@ -119,7 +125,9 @@ foreach ($users->search('plain', null, $filter, $order) as $u) {
 	echo '<td>' . $u['pesel'] . '</td>';
 	echo '<td>' . $u['street'] . ' ' . $u['houseNumber'] . '<br>' . substr($u['postCode'], 0, 2) . '-' . substr($u['postCode'], 2, 3) . ' ' . $u['town'] . '</td>';
 	echo '<td>' . ($u['permission'] === '0' ? 'użytkownik' : 'bibliotekarz') . '</td>';
-	echo '<td><a href="" class="btn btn-default">edytuj</a></td>';
+	echo '<td><a href="' . GLOBAL_ROOT .
+	'/user_form/' . $u['id'] . '-' . str_replace(' ', '_', mb_strtolower($u['name'] . ' ' . $u['surname'])) .
+	'" class="btn btn-default">edytuj</a></td>';
 
 	echo '</tr>';
 }

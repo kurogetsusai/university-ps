@@ -29,6 +29,7 @@ class User {
 	private $email;
 	private $phone;
 	private $town;
+	private $postCode;
 	private $street;
 	private $houseNumber;
 	private $permission;
@@ -61,6 +62,7 @@ class User {
 			'email'       => $this->email,
 			'phone'       => $this->phone,
 			'town'        => $this->town,
+			'postCode'    => $this->postCode,
 			'street'      => $this->street,
 			'houseNumber' => $this->houseNumber,
 			'permission'  => $this->permission
@@ -77,6 +79,7 @@ class User {
 		$this->email       = $_SESSION['user']['email'];
 		$this->phone       = $_SESSION['user']['phone'];
 		$this->town        = $_SESSION['user']['town'];
+		$this->postCode    = $_SESSION['user']['postCode'];
 		$this->street      = $_SESSION['user']['street'];
 		$this->houseNumber = $_SESSION['user']['houseNumber'];
 		$this->permission  = (int)$_SESSION['user']['permission'];
@@ -127,6 +130,11 @@ class User {
 		return $this->town;
 	}
 
+	public function getPostCode()
+	{
+		return $this->postCode;
+	}
+
 	public function getStreet()
 	{
 		return $this->street;
@@ -165,6 +173,7 @@ class User {
 		$this->email               = null;
 		$this->phone               = null;
 		$this->town                = null;
+		$this->postCode            = null;
 		$this->street              = null;
 		$this->houseNumber         = null;
 		$this->permission          = null;
@@ -250,6 +259,7 @@ class User {
 		$this->email       = $row['email'];
 		$this->phone       = $row['phone'];
 		$this->town        = $row['town'];
+		$this->postCode    = $row['postCode'];
 		$this->street      = $row['street'];
 		$this->houseNumber = $row['houseNumber'];
 		$this->permission  = (int)$row['permission'];
@@ -257,15 +267,52 @@ class User {
 		return true;
 	}
 
-	public function saveUserToDb($mode)
+	public function setData($data)
+	{
+		foreach ($data as $key => $item)
+			switch ($key) {
+			case 'id':
+				$this->id = $item;
+				break;
+			case 'pesel':
+				$this->pesel = $item;
+				break;
+			case 'plain_password':
+				$this->plain_password = $item;
+				break;
+			case 'name':
+				$this->name = $item;
+				break;
+			case 'surname':
+				$this->surname = $item;
+				break;
+			case 'email':
+				$this->email = $item;
+				break;
+			case 'phone':
+				$this->phone = $item;
+				break;
+			case 'town':
+				$this->town = $item;
+				break;
+			case 'postCode':
+				$this->postCode = $item;
+				break;
+			case 'street':
+				$this->street = $item;
+				break;
+			case 'houseNumber':
+				$this->houseNumber = $item;
+				break;
+			case 'permission':
+				$this->permission = (int)$item;
+				break;
+			}
+	}
+
+	public function saveDataToDb($mode, $input)
 	{
 		switch ($mode) {
-		case 'all':
-			# TODO
-			break;
-		case 'register':
-			# TODO
-			break;
 		case 'password':
 			# save to db
 			$stmt = $this->db->base->prepare('UPDATE user SET password = :password WHERE id = :id');
@@ -276,11 +323,82 @@ class User {
 
 			# check if that worked
 			if ($stmt->rowCount() !== 1) {
-				return 1;
+				return false;
 			}
+
+			break;
+		case 'new':
+			# generate password
+			$this->calcPasswordHash();
+
+			# save to db
+			$stmt = $this->db->base->prepare('INSERT INTO user (pesel, password, name, surname, email, phone, town, postCode, street, houseNumber, permission) ' .
+			'VALUES (:pesel, :password, :name, :surname, :email, :phone, :town, :postCode, :street, :houseNumber, :permission)');
+			$stmt->execute(array(
+				':pesel'       => $this->pesel,
+				':password'    => $this->password,
+				':name'        => $this->name,
+				':surname'     => $this->surname,
+				':email'       => $this->email,
+				':phone'       => $this->phone,
+				':town'        => $this->town,
+				':postCode'    => $this->postCode,
+				':street'      => $this->street,
+				':houseNumber' => $this->houseNumber,
+				':permission'  => $this->permission
+			));
+
+			# check if that worked
+			if ($stmt->rowCount() !== 1) {
+				return false;
+			}
+
+			# get ID
+			$this->id = $this->db->base->lastInsertId();
+
+			break;
+		case 'array_keys+object_properties':
+			$placeholders = [];
+			$data = '';
+			$first = true;
+			foreach ($input as $key => $item)
+				if (
+					$key == 'pesel' or
+					$key == 'name' or
+					$key == 'surname' or
+					$key == 'email' or
+					$key == 'phone' or
+					$key == 'town' or
+					$key == 'postCode' or
+					$key == 'street' or
+					$key == 'houseNumber' or
+					$key == 'permission'
+				) {
+					$placeholders[':' . $key] = $this->$key;
+					if ($first)
+						$first = false;
+					else
+						$data .= ', ';
+					$data .= $key . ' = :' . $key;
+				}
+
+			if (empty($placeholders))
+				return false;
+
+			# save to db
+			$stmt = $this->db->base->prepare('UPDATE user SET ' . $data . ' WHERE id = :id');
+			$placeholders[':id'] = $this->id;
+			$stmt->execute($placeholders);
+
+			# check if that worked
+			if ($stmt->rowCount() !== 1) {
+				return false;
+			}
+
+			break;
 		}
 
-		return 0;
+		return true;
 	}
 
 	public function logInUsingPassword($pesel, $password)
@@ -289,6 +407,7 @@ class User {
 		# 0 - OK
 		# 1 - wrong pesel
 		# 2 - wrong password
+		# 3 - cannot save to the db
 
 		# get user data (and check if he exists)
 		if (!$this->getDataFromDb('pesel', $pesel)) {
@@ -314,7 +433,8 @@ class User {
 			]
 		)) {
 			$this->calcPasswordHash();
-			# TODO	$this->saveUserToDb();
+			if (!$this->saveDataToDb('password'))
+				return 3;
 		}
 
 		# set session data
@@ -328,7 +448,7 @@ class User {
 		unset($_SESSION['user']);
 	}
 
-	public function changePassword($old, $new)
+	public function changePassword($old, $new, $godMode = false)
 	{
 		# Return codes:
 		# 0 - OK
@@ -337,24 +457,25 @@ class User {
 		# 3 - wrong old password
 		# 4 - can't save new password to the db
 
-		if (!$this->isLoggedIn())
+		if (!$this->isLoggedIn() and !$godMode)
 			return 1;
 
 		if ($new == '')
 			return 2;
 
 		# check old password
-		if (!password_verify($old, $this->password)) {
+		if (!$godMode and !password_verify($old, $this->password)) {
 			return 3;
 		}
 
 		$this->plain_password = $new;
 		$this->calcPasswordHash();
-		if ($this->saveUserToDb('password') != 0)
+		if (!$this->saveDataToDb('password'))
 			return 4;
 
 		# update session data
-		$this->setSession();
+		if (!$godMode)
+			$this->setSession();
 
 		return 0;
 	}
