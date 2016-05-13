@@ -48,7 +48,7 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 	- [x] page/writers
 	- [x] page/writer_form
 	- [x] page/books
-	- [ ] page/book_form
+	- [x] page/book_form
 	- [x] page/book_details
 - Frontend
 

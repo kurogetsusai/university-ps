@@ -54,7 +54,7 @@ if (isset($_POST['search_name']) and $_POST['search_name'] != '')
 
 $publishers = new \PS\Publisher($db);
 
-foreach ($publishers->search('plain', null, $filter) as $publisher) {
+foreach ($publishers->search('plain', null, $filter, 0) as $publisher) {
 	echo '<tr>';
 
 	echo '<td>' . $publisher['id'] . '</td>';

@@ -128,7 +128,7 @@ class Publisher {
 		return true;
 	}
 
-	public function search($mode, $input = null, $filter = null)
+	public function search($mode, $input = null, $filter = null, $order = 0)
 	{
 		# missing parameters
 		if ($mode == null)
@@ -161,11 +161,23 @@ class Publisher {
 				++$i;
 			}
 
+		# order mode
+		switch ($order) {
+		default:
+		case 0:
+			$orders = 'name';
+			break;
+		case 1:
+			$orders = 'id';
+			break;
+		}
+
 		# get query
 		switch ($mode) {
 		case 'plain':
 			$query = 'SELECT * ' .
-			         'FROM publisher' . $filters;
+			         'FROM publisher' . $filters . ' ' .
+			         'ORDER BY ' . $orders;
 			break;
 		}
 

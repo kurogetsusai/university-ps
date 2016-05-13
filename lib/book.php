@@ -157,7 +157,69 @@ class Book {
 
 	public function saveDataToDb($mode, $input)
 	{
-		return false;	# TODO
+		switch ($mode) {
+		case 'new':
+			# save to db
+			$stmt = $this->db->base->prepare('INSERT INTO book (isbn, title, publicationYear, publisher, totalCount, availableCount, description) ' .
+			'VALUES (:isbn, :title, :publicationYear, :publisher, :totalCount, :availableCount, :description)');
+			$stmt->execute(array(
+				':isbn' => $this->isbn,
+				':title' => $this->title,
+				':publicationYear' => $this->publicationYear,
+				':publisher' => $this->publisher,
+				':totalCount' => $this->totalCount,
+				':availableCount' => $this->availableCount,
+				':description' => $this->description
+			));
+
+			# check if that worked
+			if ($stmt->rowCount() !== 1) {
+				return false;
+			}
+
+			# get ID
+			$this->id = $this->db->base->lastInsertId();
+
+			break;
+		case 'array_keys+object_properties':
+			$placeholders = [];
+			$data = '';
+			$first = true;
+			foreach ($input as $key => $item)
+				if (
+					$key == 'isbn' or
+					$key == 'title' or
+					$key == 'publicationYear' or
+					$key == 'publisher' or
+					$key == 'totalCount' or
+					$key == 'availableCount' or
+					$key == 'description'
+				) {
+					$placeholders[':' . $key] = $this->$key;
+					if ($first)
+						$first = false;
+					else
+						$data .= ', ';
+					$data .= $key . ' = :' . $key;
+				}
+
+			if (empty($placeholders))
+				return false;
+
+			# save to db
+			$stmt = $this->db->base->prepare('UPDATE book SET ' . $data . ' WHERE id = :id');
+			$placeholders[':id'] = $this->id;
+			$stmt->execute($placeholders);
+
+			# check if that worked
+			if ($stmt->rowCount() !== 1) {
+				return false;
+			}
+
+			break;
+		}
+
+		return true;
 	}
 
 	public function search($mode, $input = null, $filter = null, $order = 0)

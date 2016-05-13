@@ -71,6 +71,63 @@ class Author {
 		return true;
 	}
 
+	public function setData($data)
+	{
+		foreach ($data as $key => $item)
+			switch ($key) {
+			case 'id':
+				$this->id = $item;
+				break;
+			case 'book':
+				$this->book = $item;
+				break;
+			case 'writer':
+				$this->writer = $item;
+				break;
+			}
+	}
+
+	public function saveDataToDb($mode)
+	{
+		switch ($mode) {
+		case 'new':
+			# save to db
+			$stmt = $this->db->base->prepare('INSERT INTO author (book, writer) VALUES (:book, :writer)');
+			$stmt->execute(array(
+				':book'   => $this->book,
+				':writer' => $this->writer
+			));
+
+			# check if that worked
+			if ($stmt->rowCount() !== 1) {
+				return false;
+			}
+
+			# get ID
+			$this->id = $this->db->base->lastInsertId();
+
+			break;
+		}
+
+		return true;
+	}
+
+	public function removeDataFromDb()
+	{
+		if ($this->id == null)
+			return false;
+
+		$stmt = $this->db->base->prepare('DELETE FROM author WHERE id = :id');
+		$stmt->execute(array('id' => $this->id));
+
+		# check if that worked
+		if ($stmt->rowCount() !== 1) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public function search($mode, $input = null)
 	{
 		# missing parameters
