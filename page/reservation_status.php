@@ -29,6 +29,7 @@ if ($user->getPermission() !== 1) {
 	$reservation->setData($data);
 	$reservation->saveDataToDb('array_keys+object_properties', $data);
 	$loader->redirect('/');
+	exit();
 }
 ?>
 <!DOCTYPE html>

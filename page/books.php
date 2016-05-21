@@ -129,13 +129,13 @@ foreach ($books->search('books+publishers+authors', null, $filter, $order) as $b
 	'/book_details/' . $book['id'] . '-' . str_replace(' ', '_', mb_strtolower($book['title'])) .
 	'" class="btn btn-default">szczegóły</a>';
 
-	if ((int)$book['totalCount'] - (int)$book['availableCount'] > 0)
-		echo ' <a href="" class="btn btn-default">zamów</a>';
-
 	if ($user->getPermission() === 1)
 		echo ' <a href="' . GLOBAL_ROOT .
 		'/book_form/' . $book['id'] . '-' . str_replace(' ', '_', mb_strtolower($book['title'])) .
 		'" class="btn btn-default">edytuj</a>';
+
+	if ((int)$book['availableCount'] > 0)
+		echo ' <a href="' . GLOBAL_ROOT . '/reservation_form/' . $book['id'] . '" class="btn btn-default">zamów</a>';
 
 	echo '</td>';
 

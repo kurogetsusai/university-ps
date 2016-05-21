@@ -9,13 +9,28 @@ if (!$user->isLoggedIn()) {
 	exit();
 }
 
+$reservation = new \PS\Reservation($db);
+
+# add-id
+if (isset($loader->getParams()[1])) {
+	# collect new data
+	$data['reserver']    = $user->getId();
+	$data['book']        = (int)$loader->getParams()[1];
+	$data['status']      = 0;
+	$data['description'] = '';
+
+	# save data to the db
+	$reservation->setData($data);
+	$reservation->saveDataToDb('new');
+	$loader->redirect('/');
+	exit();
+}
+
 # entry only for admins
 if ($user->getPermission() !== 1) {
 	$loader->redirect('/');
 	exit();
 }
-
-$reservation = new \PS\Reservation($db);
 ?>
 <!DOCTYPE html>
 <html lang="<?= DEFAULT_LANG ?>">
