@@ -109,7 +109,7 @@ foreach ($reservations->search('books+users') as $reservation) {
 	echo '<td>' . $reservations->getStatusName($reservation['status']) . '</td>';
 	echo '<td>' . $reservation['description'] . '</td>';
 	echo '<td>';
-	echo '<a class="btn btn-default" href="' . GLOBAL_ROOT . '/reservation_status" role="button">zmień status</a>';
+	echo '<a class="btn btn-default" href="' . GLOBAL_ROOT . '/reservation_status/' . $reservation['id'] . '" role="button">zmień status</a>';
 	echo '</td>';
 
 	echo '</tr>';
@@ -156,7 +156,7 @@ foreach ($reservations->search('reserver+books', $user->getId()) as $reservation
 	echo '<td>' . $reservations->getStatusName($reservation['status']) . '</td>';
 	echo '<td>' . $reservation['description'] . '</td>';
 	if ($reservation['status'] == 0)
-		echo '<td><a class="btn btn-default" href="#" role="button">anuluj</a></td>';
+		echo '<td><a class="btn btn-default" href="' . GLOBAL_ROOT . '/reservation_status/' . $reservation['id'] . '" role="button">anuluj</a></td>';
 	else
 		echo '<td></td>';
 

@@ -13,6 +13,9 @@ class Reservation {
 	private $status;
 	private $description;
 
+	# tmp
+	private $old_status = null;
+
 	# status codes
 	private $status_code = array(
 		'oczekujące',
@@ -121,6 +124,7 @@ class Reservation {
 				$this->book = (int)$item;
 				break;
 			case 'status':
+				$this->old_status = $this->status;
 				$this->status = (int)$item;
 				break;
 			case 'description':
@@ -154,6 +158,66 @@ class Reservation {
 
 			# get ID
 			$this->id = $this->db->base->lastInsertId();
+
+			break;
+		case 'array_keys+object_properties':
+			$placeholders = [];
+			$data = '';
+			$first = true;
+			foreach ($input as $key => $item)
+				if (
+					$key == 'status' or
+					$key == 'description'
+				) {
+					$placeholders[':' . $key] = $this->$key;
+					if ($first)
+						$first = false;
+					else
+						$data .= ', ';
+					$data .= $key . ' = :' . $key;
+				}
+
+			if (empty($placeholders))
+				return false;
+
+			# check if any books are available
+			if (
+				isset($input['status']) and
+				($this->status === 0 || $this->status === 3 || $this->status === 4) and
+				($this->old_status === 1 || $this->old_status === 2 || $this->old_status === 5)
+			) {
+				$stmt = $this->db->base->prepare('SELECT availableCount FROM book WHERE id = :id');
+				$stmt->execute(array(':id' => $this->book));
+				if ($stmt->fetchAll(\PDO::FETCH_ASSOC)[0]['availableCount'] <= 0)
+					return false;
+			}
+
+			# save to db
+			$stmt = $this->db->base->prepare('UPDATE reservation SET ' . $data . ' WHERE id = :id');
+			$placeholders[':id'] = $this->id;
+			$stmt->execute($placeholders);
+
+			# check if that worked
+			if ($stmt->rowCount() !== 1) {
+				return false;
+			}
+
+			# update book
+			if (
+				isset($input['status']) and
+				($this->old_status === 0 || $this->old_status === 3 || $this->old_status === 4) and
+				($this->status === 1 || $this->status === 2 || $this->status === 5)
+			) {
+				$stmt = $this->db->base->prepare('UPDATE book SET availableCount = availableCount + 1 WHERE id = :id');
+				$stmt->execute(array(':id' => $this->book));
+			} elseif (
+				isset($input['status']) and
+				($this->status === 0 || $this->status === 3 || $this->status === 4) and
+				($this->old_status === 1 || $this->old_status === 2 || $this->old_status === 5)
+			) {
+				$stmt = $this->db->base->prepare('UPDATE book SET availableCount = availableCount - 1 WHERE id = :id');
+				$stmt->execute(array(':id' => $this->book));
+			}
 
 			break;
 		}
