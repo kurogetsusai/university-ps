@@ -1,7 +1,7 @@
 <?php
 global $user;
 ?>
-<div style="margin: 0px auto; margin-right: 10%; text-align: right;">Jesteś zalogowany jako <?= $user->getName(); ?> <?= $user->getSurname(); ?></div>
+<div style="margin: 0px auto; margin-right: 10%; text-align: right;">Jesteś zalogowany jako <?= $user->getFullName() ?></div>
 <img src="<?= GLOBAL_ROOT ?>/gfx/books.png" class="logo-small" />
 <div class="main-menu">
 <?php if ($user->getPermission() === 1) { ?>

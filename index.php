@@ -1,13 +1,10 @@
 <?php
-# Version     : 0.0.0.1
+# Version     : 1.0.0.0
 # Dependencies:
 # - PHP 5.4
 # - Apache mod: rewrite
 # - the .htaccess file, make sure that your server allows overrides
 #   (check /etc/apache2/apache2.conf if <Directory /var/www/> has 'AllowOverride All')
-#
-# TODO
-# - secure page/*.php files
 
 # init
 session_start();

@@ -50,7 +50,6 @@ class Loader {
 			} elseif (is_readable('page/' . $this->params[0] . '.php')) {
 				$this->page = $this->params[0];
 			} else {
-				# TODO redirect to error 404
 				$this->page = $this->defaultPage;
 			}
 		}

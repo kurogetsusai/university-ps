@@ -36,8 +36,8 @@ Wsadź wszystkie pliki do `/var/www/html`, czy gdzie tam masz folder Apache, zai
 	- [x] libauthor
 	- [x] libreservation
 	- [x] page/home
-	- [ ] page/reservation_form
-	- [ ] page/reservation_status
+	- [x] page/reservation_form
+	- [x] page/reservation_status
 	- [x] page/login
 	- [x] page/logout
 	- [x] page/password
