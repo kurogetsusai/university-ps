@@ -15,12 +15,12 @@ class Reservation {
 
 	# status codes
 	private $status_code = array(
-		'oczekuje na zatwierdzenie',
-		'anulowane przez użytkownika',
-		'anulowane przez bibliotekarza',
-		'gotowe do wypożyczenia',
+		'oczekujące',
+		'anulowane (czytelnik)',
+		'anulowane (bibliotekarz)',
+		'gotowe do odbioru',
 		'wypożyczone',
-		'oddane (zamknięte)'
+		'oddane (zakończone)'
 	);
 
 	public function __construct($db,
@@ -60,7 +60,7 @@ class Reservation {
 
 	public function getStatusName($status)
 	{
-		return ($status == null ? $this->status_code[$this->status] : $this->status_code[$status]);
+		return ($status === null ? $this->status_code[$this->status] : $this->status_code[$status]);
 	}
 
 	public function getDescription()
@@ -103,6 +103,60 @@ class Reservation {
 		$this->book        = (int)$row['book'];
 		$this->status      = (int)$row['status'];
 		$this->description = $row['description'];
+
+		return true;
+	}
+
+	public function setData($data)
+	{
+		foreach ($data as $key => $item)
+			switch ($key) {
+			case 'id':
+				$this->id = (int)$item;
+				break;
+			case 'reserver':
+				$this->reserver = (int)$item;
+				break;
+			case 'book':
+				$this->book = (int)$item;
+				break;
+			case 'status':
+				$this->status = (int)$item;
+				break;
+			case 'description':
+				$this->description = $item;
+				break;
+			}
+	}
+
+	public function saveDataToDb($mode, $input)
+	{
+		switch ($mode) {
+		case 'new':
+			# save to db
+			$stmt = $this->db->base->prepare('INSERT INTO reservation (reserver, book, status, description) ' .
+			'VALUES (:reserver, :book, :status, :description)');
+			$stmt->execute(array(
+				':reserver' => $this->reserver,
+				':book' => $this->book,
+				':status' => $this->status,
+				':description' => $this->description
+			));
+
+			# check if that worked
+			if ($stmt->rowCount() !== 1) {
+				return false;
+			}
+
+			# update book
+			$stmt = $this->db->base->prepare('UPDATE book SET availableCount = availableCount - 1 WHERE id = :id');
+			$stmt->execute(array(':id' => $this->book));
+
+			# get ID
+			$this->id = $this->db->base->lastInsertId();
+
+			break;
+		}
 
 		return true;
 	}

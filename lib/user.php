@@ -157,7 +157,7 @@ class User {
 
 	public function getRequestDataString($code = null)
 	{
-		return ($code == null ? $this->request_data_strings[$this->request_data_result] : $this->request_data_strings[$code]);
+		return ($code === null ? $this->request_data_strings[$this->request_data_result] : $this->request_data_strings[$code]);
 	}
 
 	public function clearUserData()

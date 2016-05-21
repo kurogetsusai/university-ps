@@ -306,6 +306,12 @@ class Book {
 			         'FROM book' . $filters . ' ' .
 			         'ORDER BY ' . $orders;
 			break;
+		case 'plain:available':
+			$query = 'SELECT * ' .
+			         'FROM book ' .
+			         'WHERE availableCount > 0 ' .
+			         'ORDER BY ' . $orders;
+			break;
 		case 'plain+publishers':
 			$query = 'SELECT book.id, book.isbn, book.title, book.publicationYear, book.publisher, book.totalCount, book.availableCount, book.description, publisher.name AS publisherName ' .
 			         'FROM book INNER JOIN publisher ON book.publisher = publisher.id' . $filters . ' ' .
