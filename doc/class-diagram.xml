@@ -1,0 +1,158 @@
+<diagram program="umletino" version="14.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>310</x><y>0</y><w>430</w><h>170</h></coordinates><panel_attributes>Loader
+--
+-debugMode: boolean
+-defaultPage: string
+-page: string
+-params: string[]
+--
++__construct(cmd: string, defaultPage: string, debugMode: boolean)
++loadModule(module: string, require: boolean)
++getParams(): string[]
++getPage(): string
++redirect(destination: string)</panel_attributes><additional_attributes/></element><element><id>UMLClass</id><coordinates><x>830</x><y>0</y><w>310</w><h>110</h></coordinates><panel_attributes>Database
+--
+-loader: Loader
++base: PDO
+--
++__construct(loader: string)
++connect(host: string, base: string, login: string,
+  password: string, engine: string, charset: string)</panel_attributes><additional_attributes/></element><element><id>UMLClass</id><coordinates><x>310</x><y>180</y><w>470</w><h>730</h></coordinates><panel_attributes>User
+--
+-db: Database
+-password_cost: integer
+-logged_in: boolean
+-request_data_result: integer
+-request_data_strings: string[]
+-plain_password: string
+-id: integer
+-pesel: string
+-password: string
+-name: string
+-surname: string
+-email: string
+-phone: string
+-town: string
+-postCode: string
+-street: string
+-houseNumber: string
+-permission: integer
+--
++__construct(db: Database, password_cost: integer)
+-calcPasswordHash()
+-setSession()
+-respawnFromSession()
++isLoggedIn(): boolean
++getId(): integer
++getPesel(): string
++getName(): string
++getSurname(): string
++getFullName(): string
++getEmail(): string
++getPhone(): string
++getTown(): string
++getPostCode(): string
++getStreet(): string
++getHouseNumber(): string
++getPermission(): integer
++getRequestDataResult(): integer
++getRequestDataString(code: integer): string
++clearUserData()
++processRequestData()
++getDataFromDb(mode: string, input: string): boolean
++setData(data: string[])
++saveDataToDb(mode: string, input: string): boolean
++logInUsingPassword(pesel: string, password: string): integer
++logOut()
++changePassword(old: string, new: string, godMode: boolean): integer
++search(mode: string, input: string, filter: string[], order: integer): string[]</panel_attributes><additional_attributes/></element><element><id>UMLClass</id><coordinates><x>310</x><y>920</y><w>470</w><h>190</h></coordinates><panel_attributes>Publisher
+--
+-db: Database
+-id: integer
+-name: string
+--
++__construct(db: Database, id: integer, name: string)
++getId(): integer
++getName(): string
++getDataFromDb(mode: string, input: string): boolean
++setData(data: string[])
++saveDataToDb(mode: string, input: string): boolean
++search(mode: string, input: string, filter: string[], order: integer): string[]</panel_attributes><additional_attributes/></element><element><id>UMLClass</id><coordinates><x>310</x><y>1540</y><w>470</w><h>230</h></coordinates><panel_attributes>Writer
+--
+-db: Database
+-id: integer
+-name: string
+-surname: string
+--
++__construct(db: Database, id: integer, name: string, surname: string)
++getId(): integer
++getName(): string
++getSurname(): string
++getFullName(): string
++getDataFromDb(mode: string, input: string): boolean
++setData(data: string[])
++saveDataToDb(mode: string, input: string): boolean
++search(mode: string, input: string, filter: string[], order: integer): string[]</panel_attributes><additional_attributes/></element><element><id>UMLClass</id><coordinates><x>310</x><y>1120</y><w>470</w><h>410</h></coordinates><panel_attributes>Book
+--
+-db: Database
+-id: integer
+-isbn: string
+-title: string
+-publicationYear: string
+-publisher: integer
+-totalCount: integer
+-availableCount: integer
+-description: string
+--
++__construct(db: Database, id: integer, isbn: string, title: string,
+  publicationYear: string, publisher: integer, totalCount: integer,
+  availableCount: integer, description: string)
++getId(): integer
++getIsbn(): string
++getTitle(): string
++getPublicationYear(): string
++getPublisher(): integer
++getTotalCount(): integer
++getAvailableCount(): integer
++getDescription(): string
++isAvailable(): boolean
++getDataFromDb(mode: string, input: string): boolean
++setData(data: string[])
++saveDataToDb(mode: string, input: string): boolean
++search(mode: string, input: string, filter: string[], order: integer): string[]</panel_attributes><additional_attributes/></element><element><id>UMLClass</id><coordinates><x>310</x><y>1780</y><w>470</w><h>230</h></coordinates><panel_attributes>Author
+--
+-db: Database
+-id: integer
+-book: integer
+-writer: integer
+--
++__construct(db: Database, id: integer, book: integer, writer: integer)
++getId(): integer
++getBook(): integer
++getWriter(): integer
++getDataFromDb(mode: string, input: string): boolean
++setData(data: string[])
++saveDataToDb(mode: string, input: string): boolean
++removeDataFromDb(): boolean
++search(mode: string, input: string): string[]</panel_attributes><additional_attributes/></element><element><id>UMLClass</id><coordinates><x>310</x><y>2020</y><w>470</w><h>340</h></coordinates><panel_attributes>Reservation
+--
+-db: Database
+-id: integer
+-reserver: integer
+-book: integer
+-status: integer
+-description: string
+-old_status: integer
+-status_code: string[]
+--
++__construct(db: Database, id: integer, reserver: integer, book: integer,
+  status: integer, description: string)
++getId(): integer
++getReserver(): integer
++getBook(): integer
++getStatus(): integer
++getStatusName($status): string
++getDescription(): string
++getDataFromDb(mode: string, input: string): boolean
++setData(data: string[])
++saveDataToDb(mode: string, input: string): boolean
++search(mode: string, input: string): string[]</panel_attributes><additional_attributes/></element><element><id>Relation</id><coordinates><x>730</x><y>40</y><w>120</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>100;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>100</y><w>140</w><h>480</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;460;120;460;120;10</additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>100</y><w>170</w><h>940</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;920;150;920;150;10</additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>100</y><w>200</w><h>1250</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;1230;180;1230;180;10</additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>100</y><w>230</w><h>1590</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;1570;210;1570;210;10</additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>100</y><w>260</w><h>1820</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;1800;240;1800;240;10</additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>100</y><w>290</w><h>2110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;2090;270;2090;270;10</additional_attributes></element></diagram>
