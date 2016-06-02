@@ -73,7 +73,7 @@ if ($edit_mode) {
 				$publisher->setData($data);
 				if ($publisher->saveDataToDb('array_keys+object_properties', $data)) {
 					$_SESSION['tmp']['publisher_form']['status'] = true;
-					$loader->redirect('/publisher_form/' . $publisher->getId() . '-' . str_replace(' ', '_', mb_strtolower($publisher->getName())));
+					$loader->redirect('/publisher_form/' . $publisher->getId() . '-' . filter_var(str_replace(' ', '_', mb_strtolower($publisher->getName())), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH));
 				} else {
 					echo '<br /><div class="alert alert-danger" role="alert" style="max-width: 500px; margin: 0px auto;">Nie można zapisać danych do bazy.</div>';
 				}
@@ -111,7 +111,7 @@ if ($edit_mode) {
 				$publisher->setData($data);
 				if ($publisher->saveDataToDb('new')) {
 					$_SESSION['tmp']['publisher_form']['status'] = true;
-					$loader->redirect('/publisher_form/' . $publisher->getId() . '-' . str_replace(' ', '_', mb_strtolower($publisher->getName())));
+					$loader->redirect('/publisher_form/' . $publisher->getId() . '-' . filter_var(str_replace(' ', '_', mb_strtolower($publisher->getName())), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH));
 				} else {
 					echo '<br /><div class="alert alert-danger" role="alert" style="max-width: 500px; margin: 0px auto;">Nie można zapisać danych do bazy.</div>';
 				}

@@ -60,7 +60,7 @@ foreach ($publishers->search('plain', null, $filter, 0) as $publisher) {
 	echo '<td>' . $publisher['id'] . '</td>';
 	echo '<td>' . $publisher['name'] . '</td>';
 	echo '<td><a href="' . GLOBAL_ROOT .
-	'/publisher_form/' . $publisher['id'] . '-' . str_replace(' ', '_', mb_strtolower($publisher['name'])) .
+	'/publisher_form/' . $publisher['id'] . '-' . filter_var(str_replace(' ', '_', mb_strtolower($publisher['name'])), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH) .
 	'" class="btn btn-default">edytuj</a></td>';
 
 	echo '</tr>';

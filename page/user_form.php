@@ -144,11 +144,11 @@ if ($edit_mode) {
 
 				if (!$error1 and !$error2) {
 					$_SESSION['tmp']['user_form']['status'] = true;
-					$loader->redirect('/user_form/' . $u->getId() . '-' . str_replace(' ', '_', mb_strtolower($u->getFullName())));
+					$loader->redirect('/user_form/' . $u->getId() . '-' . filter_var(str_replace(' ', '_', mb_strtolower($u->getFullName())), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH));
 				} elseif ($error1 and !$error2) {
 					$_SESSION['tmp']['user_form']['status'] = true;
 					$_SESSION['tmp']['user_form']['changePasswordError'] = true;
-					$loader->redirect('/user_form/' . $u->getId() . '-' . str_replace(' ', '_', mb_strtolower($u->getFullName())));
+					$loader->redirect('/user_form/' . $u->getId() . '-' . filter_var(str_replace(' ', '_', mb_strtolower($u->getFullName())), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH));
 				}
 			}
 		}
@@ -249,7 +249,7 @@ if ($edit_mode) {
 			$u->setData($data);
 			if ($u->saveDataToDb('new')) {
 				$_SESSION['tmp']['user_form']['status'] = true;
-				$loader->redirect('/user_form/' . $u->getId() . '-' . str_replace(' ', '_', mb_strtolower($u->getFullName())));
+				$loader->redirect('/user_form/' . $u->getId() . '-' . filter_var(str_replace(' ', '_', mb_strtolower($u->getFullName())), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH));
 			} else {
 				echo '<br /><div class="alert alert-danger" role="alert" style="max-width: 500px; margin: 0px auto;">Nie można zapisać danych do bazy.</div>';
 			}

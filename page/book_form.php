@@ -204,7 +204,7 @@ if ($edit_mode) {
 
 					if (!$error1 and !$error2 and empty($data)) {
 						$_SESSION['tmp']['book_form']['status'] = true;
-						$loader->redirect('/book_form/' . $book->getId() . '-' . str_replace(' ', '_', mb_strtolower($book->getTitle())));
+						$loader->redirect('/book_form/' . $book->getId() . '-' . filter_var(str_replace(' ', '_', mb_strtolower($book->getTitle())), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH));
 					}
 
 					unset($author);
@@ -217,7 +217,7 @@ if ($edit_mode) {
 					$book->saveDataToDb('array_keys+object_properties', $data)
 				) {
 					$_SESSION['tmp']['book_form']['status'] = true;
-					$loader->redirect('/book_form/' . $book->getId() . '-' . str_replace(' ', '_', mb_strtolower($book->getTitle())));
+					$loader->redirect('/book_form/' . $book->getId() . '-' . filter_var(str_replace(' ', '_', mb_strtolower($book->getTitle())), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH));
 				} else {
 					echo '<br /><div class="alert alert-danger" role="alert" style="max-width: 500px; margin: 0px auto;">Nie można zapisać danych do bazy.</div>';
 				}
@@ -319,7 +319,7 @@ if ($edit_mode) {
 
 			if (!$error1 and !$error2) {
 				$_SESSION['tmp']['book_form']['status'] = true;
-				$loader->redirect('/book_form/' . $book->getId() . '-' . str_replace(' ', '_', mb_strtolower($book->getTitle())));
+				$loader->redirect('/book_form/' . $book->getId() . '-' . filter_var(str_replace(' ', '_', mb_strtolower($book->getTitle())), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH));
 			}
 		}
 	}

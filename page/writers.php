@@ -81,7 +81,7 @@ foreach ($writers->search('plain', null, $filter, $order) as $writer) {
 	echo '<td>' . $writer['name'] . '</td>';
 	echo '<td>' . $writer['surname'] . '</td>';
 	echo '<td><a href="' . GLOBAL_ROOT .
-	'/writer_form/' . $writer['id'] . '-' . str_replace(' ', '_', mb_strtolower($writer['name'] . ' ' . $writer['surname'])) .
+	'/writer_form/' . $writer['id'] . '-' . filter_var(str_replace(' ', '_', mb_strtolower($writer['name'] . ' ' . $writer['surname'])), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH) .
 	'" class="btn btn-default">edytuj</a></td>';
 
 	echo '</tr>';

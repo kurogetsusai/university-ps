@@ -126,12 +126,12 @@ foreach ($books->search('books+publishers+authors', null, $filter, $order) as $b
 	echo '<td>';
 
 	echo '<a href="' . GLOBAL_ROOT .
-	'/book_details/' . $book['id'] . '-' . str_replace(' ', '_', mb_strtolower($book['title'])) .
+	'/book_details/' . $book['id'] . '-' . filter_var(str_replace(' ', '_', mb_strtolower($book['title'])), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH) .
 	'" class="btn btn-default">szczegóły</a>';
 
 	if ($user->getPermission() === 1)
 		echo ' <a href="' . GLOBAL_ROOT .
-		'/book_form/' . $book['id'] . '-' . str_replace(' ', '_', mb_strtolower($book['title'])) .
+		'/book_form/' . $book['id'] . '-' . filter_var(str_replace(' ', '_', mb_strtolower($book['title'])), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH) .
 		'" class="btn btn-default">edytuj</a>';
 
 	if ((int)$book['availableCount'] > 0)

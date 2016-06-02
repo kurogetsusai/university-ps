@@ -63,7 +63,7 @@ unset($publisher);
 				</div>
 				<div class="well"><?= $book->getDescription() ?></div>
 <?php if ($user->getPermission() === 1) { ?>
-				<a href="<?= GLOBAL_ROOT . '/book_form/' . $book->getId() . '-' . str_replace(' ', '_', mb_strtolower($book->getTitle())) ?>" class="btn btn-primary">Edytuj</a>
+				<a href="<?= GLOBAL_ROOT . '/book_form/' . $book->getId() . '-' . filter_var(str_replace(' ', '_', mb_strtolower($book->getTitle())), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH) ?>" class="btn btn-primary">Edytuj</a>
 <?php } ?>
 				<a href="" class="btn btn-primary">Zamów</a>
 				<a href="<?= GLOBAL_ROOT ?>/books" class="btn btn-primary">Powrót</a>

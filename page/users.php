@@ -126,7 +126,7 @@ foreach ($users->search('plain', null, $filter, $order) as $u) {
 	echo '<td>' . $u['street'] . ' ' . $u['houseNumber'] . '<br>' . substr($u['postCode'], 0, 2) . '-' . substr($u['postCode'], 2, 3) . ' ' . $u['town'] . '</td>';
 	echo '<td>' . ($u['permission'] === '0' ? 'użytkownik' : 'bibliotekarz') . '</td>';
 	echo '<td><a href="' . GLOBAL_ROOT .
-	'/user_form/' . $u['id'] . '-' . str_replace(' ', '_', mb_strtolower($u['name'] . ' ' . $u['surname'])) .
+	'/user_form/' . $u['id'] . '-' . filter_var(str_replace(' ', '_', mb_strtolower($u['name'] . ' ' . $u['surname'])), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH) .
 	'" class="btn btn-default">edytuj</a></td>';
 
 	echo '</tr>';

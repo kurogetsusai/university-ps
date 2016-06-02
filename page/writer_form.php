@@ -83,7 +83,7 @@ if ($edit_mode) {
 				$writer->setData($data);
 				if ($writer->saveDataToDb('array_keys+object_properties', $data)) {
 					$_SESSION['tmp']['writer_form']['status'] = true;
-					$loader->redirect('/writer_form/' . $writer->getId() . '-' . str_replace(' ', '_', mb_strtolower($writer->getName() . ' ' . $writer->getSurname())));
+					$loader->redirect('/writer_form/' . $writer->getId() . '-' . filter_var(str_replace(' ', '_', mb_strtolower($writer->getName() . ' ' . $writer->getSurname())), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH));
 				} else {
 					echo '<br /><div class="alert alert-danger" role="alert" style="max-width: 500px; margin: 0px auto;">Nie można zapisać danych do bazy.</div>';
 				}
@@ -126,7 +126,7 @@ if ($edit_mode) {
 				$writer->setData($data);
 				if ($writer->saveDataToDb('new')) {
 					$_SESSION['tmp']['writer_form']['status'] = true;
-					$loader->redirect('/writer_form/' . $writer->getId() . '-' . str_replace(' ', '_', mb_strtolower($writer->getName() . ' ' . $writer->getSurname())));
+					$loader->redirect('/writer_form/' . $writer->getId() . '-' . filter_var(str_replace(' ', '_', mb_strtolower($writer->getName() . ' ' . $writer->getSurname())), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH));
 				} else {
 					echo '<br /><div class="alert alert-danger" role="alert" style="max-width: 500px; margin: 0px auto;">Nie można zapisać danych do bazy.</div>';
 				}
